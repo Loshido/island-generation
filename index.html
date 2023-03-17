@@ -8,6 +8,34 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <section>
+        <div class="open"></div>
+        <div class="controls">
+            <div id="regenerate">
+                Regénérer
+            </div>
+            <div>
+                <label for="seed">seed</label>
+                <input type="number" id="seed" min="0" max="9999999">
+            </div>
+            <div>
+                <label for="noise_scale">noise_scale</label>
+                <input type="number" id="noise_scale" step="0.001" min="0.001">
+            </div>
+            <div>
+                <label for="resolution">resolution</label>
+                <input type="number" id="resolution" max="2" step="0.1" min="0.1">
+            </div>
+            <div>
+                <label for="rayon_ile">rayon_ile</label>
+                <input type="number" id="rayon_ile" step="10" min="0">
+            </div>
+            <div>
+                <label for="octaves">octaves</label>
+                <input type="number" id="octaves" step="0.1">
+            </div>
+        </div>
+    </section>
     <script src="perlin.js"></script>
     <script src="island.js"></script>
     <script>
@@ -17,23 +45,52 @@
         // On récupère l'accès au canvas
         let ctx = new_canvas_ctx(w, h)
 
-        const resolution = 0.2
-        const noise_scale = 0.0075
-        const rayon_ile = 200
-        const octaves = 1.5
+        const parametres = {
+            seed: Math.floor(Math.random() * 9999999),
+            resolution: 0.2,
+            noise_scale: 0.0075,
+            rayon_ile: 200,
+            octaves: 1.5
+        }
+
+        const controls = {
+            seed: document.getElementById("seed"),
+            noise_scale: document.getElementById("noise_scale"),
+            resolution: document.getElementById("resolution"),
+            rayon_ile: document.getElementById("rayon_ile"),
+            octaves: document.getElementById("octaves")
+        }
 
         // On génère la matrice de valeurs de l'île
-        let island = generer_ile(resolution, noise_scale, w, h, rayon_ile)
+        noiseSeed(parametres.seed)
+        let island = generer_ile(parametres.resolution, parametres.noise_scale, w, h, parametres.rayon_ile)
     
         // On dessine sur le canvas l'île en fonction de la résolution
-        dessiner_ile(ctx, resolution, island, octaves)
+        dessiner_ile(ctx, parametres.resolution, island, parametres.octaves)
 
-        // On permet à l'utilisateur de régénérer l'île avec un click.
-        document.body.addEventListener("click", () => {
-            noiseSeed(Math.floor(Math.random() * 100))
-            island = generer_ile(resolution, noise_scale, w, h, rayon_ile)
-            dessiner_ile(ctx, resolution, island, octaves)
+        const regenerate = () => {
+            island = generer_ile(parametres.resolution, parametres.noise_scale, w, h, parametres.rayon_ile)
+            dessiner_ile(ctx, parametres.resolution, island, parametres.octaves)
+        }
+
+        
+        
+        document.getElementById("regenerate").addEventListener("click", () => {
+            parametres.seed = Math.floor(Math.random() * 9999999)
+            controls.seed.value = parametres.seed
+            noiseSeed(parametres.seed)
+            regenerate()
         })
+
+        for(let indice of Object.keys(controls)) {
+            controls[indice].value = parametres[indice]
+            controls[indice].addEventListener("input", event => {
+                let value = parseFloat(controls[indice].value)
+                parametres[indice] = value
+                if(indice == "seed") noiseSeed(parametres.seed)
+                regenerate()
+            })
+        }
     </script>
 </body> 
 </html>
