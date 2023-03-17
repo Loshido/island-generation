@@ -14,6 +14,11 @@
     
 */
 function generer_ile(resolution, noise_scale, width, height, rayon_ile) {
+    console.debug("fn - generer_ile", {
+        resolution, noise_scale,
+        width, height, rayon_ile
+    })
+    console.time("generer_ile")
     const ile = []
     for(let x = 0; x < width * resolution; x++) {
         const row = []
@@ -26,6 +31,7 @@ function generer_ile(resolution, noise_scale, width, height, rayon_ile) {
         }
         ile.push(row)
     }
+    console.timeEnd("generer_ile")
     return ile
 }
 
@@ -102,13 +108,13 @@ const couches = {
     "0.01": n => {
         const p = pourcentage_entre_indice(n, 0.01, 0.34)
         let rgb = [
-            25,
-            25,
-            255 - Math.floor(p * 255 - 200)
+            0,
+            75,
+            255 - Math.floor(p * (255 - 200))
         ]
         return "rgb(" + rgb.join(",") + ")" 
     },
-    "-100.0": () => "rgb(25, 25, 200)"
+    "-100.0": () => "rgb(25, 75, 200)"
 }
 
 /*
@@ -150,6 +156,10 @@ function couleur_de_couche(n) {
 */
 
 function dessiner_ile(ctx, resolution, island, octaves) {
+    console.debug("fn - dessiner_ile", {
+        ctx, resolution, island, octaves
+    })
+    console.time("dessiner_ile")
     for(const x in island) {
         for(const y in island[x]) {
             const n = island[x][y] * octaves
@@ -157,6 +167,7 @@ function dessiner_ile(ctx, resolution, island, octaves) {
             ctx.fillRect(x * (1 / resolution), y * (1 / resolution), 1 / resolution, 1 / resolution)
         }
     }
+    console.timeEnd("dessiner_ile")
 }
 
 /*
@@ -178,5 +189,6 @@ function new_canvas_ctx(width, height) {
     canvas.width = width
     canvas.height = height
     document.body.appendChild(canvas)
+    console.debug("canvas created")
     return canvas.getContext("2d")
 }
