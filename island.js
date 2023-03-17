@@ -99,7 +99,16 @@ const couches = {
         ]
         return "rgb(" + rgb.join(",") + ")"
     },
-    "-100.0": () => "rgb(25, 25, 255)"
+    "0.01": n => {
+        const p = pourcentage_entre_indice(n, 0.01, 0.34)
+        let rgb = [
+            25,
+            25,
+            255 - Math.floor(p * 255 - 200)
+        ]
+        return "rgb(" + rgb.join(",") + ")" 
+    },
+    "-100.0": () => "rgb(25, 25, 200)"
 }
 
 /*
