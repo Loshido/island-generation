@@ -24,7 +24,7 @@
                 for(let y = 0; y < h * resolution; y++) {
                     let n = noise(x * (1 / resolution) * noise_scale, y * (1 / resolution) * noise_scale)
                     const d = Math.sqrt((x - (w * resolution) / 2) ** 2 + (y - (h * resolution) / 2) ** 2)
-                    n = n - (d / 200) < 0 ? 0 : n - (d / rayon_ile)
+                    n = n - (d / rayon_ile) < 0 ? 0 : n - (d / rayon_ile)
 
                     if(n > 0.74) fill(225 - n * 50, 225 - n * 50, 225 - n * 50)  // Neige
                     else if(n > 0.725) {
