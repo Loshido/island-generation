@@ -8,48 +8,32 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <script src="p5.js"></script>
+    <script src="perlin.js"></script>
+    <script src="island.js"></script>
     <script>
+        // On récupère la taille de la page
         const [w, h] = [window.innerWidth, window.innerHeight]
-        const resolution = 0.2
-        const noise_scale = 0.006
-        const frac = (min, max, n) => (n - min) / (max - min)
-        const rayon_ile = 200
-        
-        function setup() {
-            createCanvas(w, h);
-            noStroke()
-            for(let x = 0; x < w * resolution; x++){
-                for(let y = 0; y < h * resolution; y++) {
-                    let n = noise(x * (1 / resolution) * noise_scale, y * (1 / resolution) * noise_scale)
-                    const d = Math.sqrt((x - (w * resolution) / 2) ** 2 + (y - (h * resolution) / 2) ** 2)
-                    n = n - (d / rayon_ile) < 0 ? 0 : n - (d / rayon_ile)
 
-                    if(n > 0.74) fill(225 - n * 50, 225 - n * 50, 225 - n * 50)  // Neige
-                    else if(n > 0.725) {
-                        const i = frac(0.725, 0.74, n)
-                        fill(180 - i * 80, 180 - i * 80, 180 - i * 80) // Montagnes
-                    } else if(n > 0.6) {
-                        const i = frac(0.6, 0.725, n)
-                        fill(82 - i * 41, 82 - i * 41, 82 - i * 41) // Herbes
-                    } else if(n > 0.575) {
-                        const i = frac(0.575, 0.6, n)
-                        fill(120 - i * 50, 120 - i * 50, 120 - i * 50) // Terres
-                    } else if(n > 0.415) {
-                        const i = frac(0.415, 0.575, n)
-                        fill(39 - i * 39, 92 - i * 39, 41 - i * 39) // Sable
-                    } else if(n > 0.375) {
-                        const i = frac(0.375, 0.415, n)
-                        fill(119 - i * 41, 63 - i * 41, 41 - i * 41) // Eau
-                    } else if(n > 0.34) {
-                        const i = frac(0.34, 0.375, n)
-                        fill(212 - i * 50, 224 - i * 75, 103 - i * 25)
-                    } else if(n > 0.1) fill(10, 10, n / 0.34 * 255)
-                    else fill(10, 10, 255 * 0.34)
-                    square(x * (1 / resolution), y * (1 / resolution), 1 / resolution)
-                }
-            }
-        }
+        // On récupère l'accès au canvas
+        let ctx = new_canvas_ctx(w, h)
+
+        const resolution = 0.2
+        const noise_scale = 0.0075
+        const rayon_ile = 200
+        const octaves = 1.5
+
+        // On génère la matrice de valeurs de l'île
+        let island = generer_ile(resolution, noise_scale, w, h, rayon_ile)
+    
+        // On dessine sur le canvas l'île en fonction de la résolution
+        dessiner_ile(ctx, resolution, island, octaves)
+
+        // On permet à l'utilisateur de régénérer l'île avec un click.
+        document.body.addEventListener("click", () => {
+            noiseSeed(Math.floor(Math.random() * 100))
+            island = generer_ile(resolution, noise_scale, w, h, rayon_ile)
+            dessiner_ile(ctx, resolution, island, octaves)
+        })
     </script>
 </body> 
 </html>
