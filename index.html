@@ -10,7 +10,24 @@
 </head>
 <body>
     <section>
-        <div class="controls">
+        <div class="controls controls-game">
+            <div>
+                <pre>Z</pre> : avancer
+            </div>
+            <div>
+                <pre>S</pre> : reculer
+            </div>
+            <div>
+                <pre>Q</pre> : aller à gauche
+            </div>
+            <div>
+                <pre>D</pre> : aller à droite
+            </div>
+            <div>
+                <pre>X</pre> : Revenir au menu principale
+            </div>
+        </div>
+        <div class="controls controls-generation">
             <div id="regenerate">Regénérer</div>
             <div>
                 <label for="seed">seed</label>
@@ -35,14 +52,17 @@
             <div id="play">Jouer</div>
         </div>
     </section>
-    <script src="perlin.js"></script>
-    <script src="island.js"></script>
-    <script>
-        // On récupère la taille de la page
-        let [w, h] = [window.innerWidth, window.innerHeight]
 
-        // On récupère l'accès au canvas
-        let canvas = () => document.getElementById("island")
+    <script src="perlin.js" type="module"></script>
+    <script src="island.js" type="module"></script>
+    <script src="game.js" type="module" defer></script>
+
+    <script type="module">
+        import { generer_ile, dessiner_ile, new_canvas_ctx } from "./island.js"
+        import { noiseSeed } from "./perlin.js"
+        import { gameStart } from "./game.js"
+
+        let [w, h] = [window.innerWidth, window.innerHeight]
         let ctx = new_canvas_ctx(w, h)
 
         const parametres = {
@@ -80,31 +100,7 @@
             regenerate()
         })
 
-        document.getElementById("play").addEventListener("click", () => {
-            const cv = canvas()
-            const intervalle = 5
-            let [top, left] = [0, 0]
-            cv.classList.add("playing")
-            document.addEventListener("keypress", ev => {
-                console.log(ev)
-                if(ev.key == "s") {
-                    top -= intervalle
-                    cv.style.top = `${top}px`
-                }
-                if(ev.key == "z") {
-                    top += intervalle
-                    cv.style.top = `${top}px`
-                }
-                if(ev.key == "d") {
-                    left -= intervalle
-                    cv.style.left = `${left}px`
-                }
-                if(ev.key == "q") {
-                    left += intervalle
-                    cv.style.left = `${left}px`
-                }
-            })
-        })
+        document.getElementById("play").addEventListener("click", gameStart)
 
         for(let indice of Object.keys(controls)) {
             controls[indice].value = parametres[indice]

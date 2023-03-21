@@ -1,3 +1,5 @@
+import { noise } from "./perlin.js"
+
 /*
     generer_ile(resolution, noise_scale, width, height, rayon_ile)
 
@@ -24,7 +26,7 @@ function generer_ile(resolution, noise_scale, width, height, rayon_ile) {
         const row = []
         for(let y = 0; y < height * resolution; y++) {
             let n = noise(x * (1 / resolution) * noise_scale, y * (1 / resolution) * noise_scale)
-            const d = Math.sqrt((x - (w * resolution) / 2) ** 2 + (y - (h * resolution) / 2) ** 2)
+            const d = Math.sqrt((x - (width * resolution) / 2) ** 2 + (y - (height * resolution) / 2) ** 2)
             n = n - d / rayon_ile
             
             row.push(n)
@@ -193,3 +195,5 @@ function new_canvas_ctx(width, height) {
     console.debug("canvas created")
     return canvas.getContext("2d")
 }
+
+export { generer_ile, dessiner_ile, new_canvas_ctx}

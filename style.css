@@ -16,6 +16,13 @@ body > section{
     left: 0;
     margin: 25px;
 }
+body > section > div.controls.controls-game{
+    margin: 25px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
 body > section > div.controls{
     display: flex;
     flex-direction: row;
@@ -42,8 +49,8 @@ body > section > div.controls > div > input[type="number"]{
     border: none;
     outline: none;}
 
-body > section > div.controls #regenerate:hover{background-color: rgba(255, 255, 255, 0.5);}
-body > section > div.controls #regenerate{
+body > section > div.controls-generation :is(#regenerate, #play):hover{background-color: rgba(255, 255, 255, 0.5);}
+body > section > div.controls-generation :is(#regenerate, #play){
     padding: 8px 16px;
     cursor: pointer;
     transition: background-color .25s ease-in-out;}
@@ -59,3 +66,13 @@ canvas#island.playing{
     top: 0;
     left: 0;
 }
+
+canvas.user{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
+
+body > section > div.controls.controls-game{display: none;}
+body.playing > section > div.controls.controls-game{display: flex;}
