@@ -182,10 +182,11 @@ function dessiner_ile(ctx, resolution, island, octaves) {
 
 let cv = false
 function new_canvas_ctx(width, height) {
-    if(cv) document.querySelector("canvas").remove()
+    if(cv) document.getElementById("island").remove()
     cv = true
 
     const canvas = document.createElement("canvas")
+    canvas.id = "island"
     canvas.width = width
     canvas.height = height
     document.body.appendChild(canvas)

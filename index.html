@@ -32,15 +32,17 @@
                 <label for="octaves">octaves</label>
                 <input type="number" id="octaves" step="0.1">
             </div>
+            <div id="play">Jouer</div>
         </div>
     </section>
     <script src="perlin.js"></script>
     <script src="island.js"></script>
     <script>
         // On récupère la taille de la page
-        const [w, h] = [window.innerWidth, window.innerHeight]
+        let [w, h] = [window.innerWidth, window.innerHeight]
 
         // On récupère l'accès au canvas
+        let canvas = () => document.getElementById("island")
         let ctx = new_canvas_ctx(w, h)
 
         const parametres = {
@@ -70,14 +72,38 @@
             island = generer_ile(parametres.resolution, parametres.noise_scale, w, h, parametres.rayon_ile)
             dessiner_ile(ctx, parametres.resolution, island, parametres.octaves)
         }
-
-        
         
         document.getElementById("regenerate").addEventListener("click", () => {
             parametres.seed = Math.floor(Math.random() * 9999999)
             controls.seed.value = parametres.seed
             noiseSeed(parametres.seed)
             regenerate()
+        })
+
+        document.getElementById("play").addEventListener("click", () => {
+            const cv = canvas()
+            const intervalle = 5
+            let [top, left] = [0, 0]
+            cv.classList.add("playing")
+            document.addEventListener("keypress", ev => {
+                console.log(ev)
+                if(ev.key == "s") {
+                    top -= intervalle
+                    cv.style.top = `${top}px`
+                }
+                if(ev.key == "z") {
+                    top += intervalle
+                    cv.style.top = `${top}px`
+                }
+                if(ev.key == "d") {
+                    left -= intervalle
+                    cv.style.left = `${left}px`
+                }
+                if(ev.key == "q") {
+                    left += intervalle
+                    cv.style.left = `${left}px`
+                }
+            })
         })
 
         for(let indice of Object.keys(controls)) {
@@ -89,6 +115,13 @@
                 regenerate()
             })
         }
+
+        // Lorsque la fenêtre change de taille 
+        window.addEventListener("resize", () => {
+            [w, h] = [window.innerWidth, window.innerHeight]
+            ctx = new_canvas_ctx(w, h)
+            regenerate()
+        })
     </script>
 </body> 
 </html>

@@ -47,3 +47,15 @@ body > section > div.controls #regenerate{
     padding: 8px 16px;
     cursor: pointer;
     transition: background-color .25s ease-in-out;}
+
+canvas#island{
+    transition: transform .5s ease-in-out;
+}
+canvas#island.playing{
+    transform: scale(3);}
+.playing{
+    z-index: 5;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
