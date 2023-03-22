@@ -1,5 +1,5 @@
 let [top, left] = [0, 0]
-const INTERVALLE = 15
+const INTERVALLE = 10
 const users = []
 
 function stepY(canvas, value) {
@@ -28,10 +28,14 @@ const keys = {
         stepX(canvas, INTERVALLE)
     },
     "x": function(canvas) {
-        users.forEach(user => document.getElementById(user).remove())
+        canvas.style.top = "0px"
+        canvas.style.left = "0px"
         canvas.classList.remove("playing")
         document.removeEventListener("keypress", gameStart)
         document.body.classList.remove("playing")
+
+        users.forEach(user => document.getElementById(user).remove())
+        users = []
     }
 }
 
