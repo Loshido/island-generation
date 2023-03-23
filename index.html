@@ -34,11 +34,14 @@
             </div>
         </div>
     </section>
-    <script src="perlin.js"></script>
-    <script src="island.js"></script>
-    <script>
+    <script src="perlin.js" type="module"></script>
+    <script src="island.js" type="module"></script>
+    <script type="module">
+        import { new_canvas_ctx, generer_ile, dessiner_ile } from "./island.js"
+        import { noiseSeed } from "./perlin.js"
+
         // On récupère la taille de la page
-        const [w, h] = [window.innerWidth, window.innerHeight]
+        let [w, h] = [window.innerWidth, window.innerHeight]
 
         // On récupère l'accès au canvas
         let ctx = new_canvas_ctx(w, h)
