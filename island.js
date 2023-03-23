@@ -67,27 +67,27 @@ function generer_ile(resolution, noise_scale, width, height, rayon_ile) {
 */
 const pourcentage_entre_indice = (n, max, min) => (n - min) / (max - min)
 const couches = {
-    "0.74": n => {
+    "0.85": n => {
         let rgb = Math.floor(255 - n * 50).toString()
         return `rgb(${ rgb }, ${ rgb }, ${ rgb })` // Neige
     },
-    "0.725": n => {
-        const p = Math.floor(pourcentage_entre_indice(n, 0.74, 0.725) * 80)
-        let rgb = 180 - p
-        return `rgb(${ rgb }, ${ rgb }, ${ rgb })` // Montagne
-    },
-    "0.6": n => {
-        const p = Math.floor(pourcentage_entre_indice(n, 0.725, 0.6) * 41)
+    // "0.75": n => {
+    //     const p = Math.floor(pourcentage_entre_indice(n, 0.80, 0.75) * 80)
+    //     let rgb = 180 - p
+    //     return `rgb(${ rgb }, ${ rgb }, ${ rgb })` // Montagne
+    // },
+    "0.7": n => {
+        const p = Math.floor(pourcentage_entre_indice(n, 0.85, 0.7) * 41)
         let rgb = (82 - p).toString()
         return `rgb(${ rgb }, ${ rgb }, ${ rgb })` // Rochers
     },
-    "0.575": n => {
-        const p = Math.floor(pourcentage_entre_indice(n, 0.6, 0.575) * 50)
-        let rgb = 120 - p
-        return `rgb(${ rgb }, ${ rgb }, ${ rgb })` // Cailloux
-    },
+    // "0.575": n => {
+    //     const p = Math.floor(pourcentage_entre_indice(n, 0.6, 0.575) * 50)
+    //     let rgb = 120 - p
+    //     return `rgb(${ rgb }, ${ rgb }, ${ rgb })` // Cailloux
+    // },
     "0.415": n => {
-        const p = Math.floor(pourcentage_entre_indice(n, 0.575, 0.415) * 50)
+        const p = Math.floor(pourcentage_entre_indice(n, 0.7, 0.415) * 50)
         let rgb = [70 - p, 110 - p, 70 - p]
         return "rgb(" + rgb.join(",") + ")" // Herbe
     },
