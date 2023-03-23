@@ -28,100 +28,35 @@ function generer_ile(resolution, noise_scale, width, height, rayon_ile, multipli
             n = (n - d / rayon_ile) * multiplicateur
             
             const couleur = couleur_de_couche(n)
-            const point = {
+            if(ile[couleur] == undefined) ile[couleur] = []
+            ile[couleur].push({
                 x: x * (1 / resolution),
                 y: y * (1 / resolution),
                 n
-            }
-            if(ile[couleur] != undefined) ile[couleur].push(point);
-            else ile[couleur] = [point];
+            });
         }
     }
     console.timeEnd("generer_ile")
     return ile
 }
 
-/*
-    couches = {}
-
-    Matrice des couches, 
-    il s'agit d'un objet contenant des fonctions 
-    qui renvoie la couleur pour une hauteur n.
-
-    ps: Un objet permet de contenir plusieurs 
-    variables accéssible par des "clés" (keys), 
-    sous cette forme :
-
-    let objet = {
-        key: true,
-        "en chaine de caractère": n => n
-    }
-    objet.key // true
-    objet["en chaine de caractère"](10) // 10 
-
-    Vous devez également savoir que en JavaScript
-    une variable peut contenir une fonction sous 
-    la forme fléchée ou traditionnele :
-    
-    let x = (n) => n + 1
-    let y = function(n) {
-        return n + 2
-    }
-    console.log(x(10)) // 11
-    console.log(y(12)) // 14
-
-*/
 const pourcentage_entre_indice = (n, max, min) => (n - min) / (max - min)
-const couches = {
-    "0.85": n => {
-        let rgb = Math.floor(255 - n * 50).toString()
-        return `rgb(${ rgb }, ${ rgb }, ${ rgb })` // Neige
-    },
-    // "0.75": n => {
-    //     const p = Math.floor(pourcentage_entre_indice(n, 0.80, 0.75) * 80)
-    //     let rgb = 180 - p
-    //     return `rgb(${ rgb }, ${ rgb }, ${ rgb })` // Montagne
-    // },
-    "0.7": n => {
-        const p = Math.floor(pourcentage_entre_indice(n, 0.85, 0.7) * 41)
-        let rgb = (82 - p).toString()
-        return `rgb(${ rgb }, ${ rgb }, ${ rgb })` // Rochers
-    },
-    // "0.575": n => {
-    //     const p = Math.floor(pourcentage_entre_indice(n, 0.6, 0.575) * 50)
-    //     let rgb = 120 - p
-    //     return `rgb(${ rgb }, ${ rgb }, ${ rgb })` // Cailloux
-    // },
-    "0.415": n => {
-        const p = Math.floor(pourcentage_entre_indice(n, 0.7, 0.415) * 50)
-        let rgb = [70 - p, 110 - p, 70 - p]
-        return "rgb(" + rgb.join(",") + ")" // Herbe
-    },
-    "0.375": n => {
-        const p = Math.floor(pourcentage_entre_indice(n, 0.415, 0.375) * 41)
-        let rgb = [119 - p, 63 - p, 41 - p]
-        return "rgb(" + rgb.join(",") + ")" // Terre
-    },
-    "0.34": n => {
-        const p = pourcentage_entre_indice(n, 0.375, 0.34)
-        let rgb = [
-            235 - Math.floor(p * 50),
-            235 - Math.floor(p * 75),
-            205 - Math.floor(p * 25)
-        ]
-        return "rgb(" + rgb.join(",") + ")" // Sable
-    },
-    "0.01": n => {
-        const p = pourcentage_entre_indice(n, 0.01, 0.34)
-        let b = 255 - Math.floor(p * 55)
-        return `rgb(0, 75, ${b})` // Mer
-    },
-    "-100.0": () => "rgb(25, 75, 200)" // Ocean
-}
+const NEIGE = {max: 100.0, min: 0.85, colors: [255, 255, 255], range: 41}
+const ROCHERS = {max: 0.85, min: 0.7, colors: [82, 82, 82], range: 41}
+const HERBE = {max: 0.7, min: 0.415, colors: [70, 110, 70], range: 50}
+const TERRE = {max: 0.415, min: 0.375, colors: [119, 63, 41], range: 41}
+const SABLE = {max: 0.375, min: 0.34, colors: [235, 235, 205], range: 50}
+const MER = {max: 0.34, min: 0.01, colors: [0, 75, 255], range: 55}
+const OCEAN = {max: 0.01, min: -100.0, colors: [25, 75, 200], range: 0}
+const couches = Object.entries({
+    NEIGE, ROCHERS, HERBE,
+    TERRE, SABLE, MER,
+    OCEAN
+})
 
 /*
 
-    couleur_de_couche(n)
+    couleur_de_couche(n)w
 
     Fonction qui renvoie la couleur de la couche 
     pour une hauteur n. Elle parcourt toutes les
@@ -130,20 +65,19 @@ const couches = {
     si cette condition est rempli elle renvoie
     immédiatement la couleur.
 
-    ps: la fonction "parseFloat" permet de 
-    transformer une valeur de type chaine 
-    de caractère (ou autre) directement en float;
-    tel que :
-
-    parseFloat("1.0") // 1.0
-    parseFloat(true) // NaN
-
 */
 function couleur_de_couche(n) {
-    for(const couche in couches) {
-        const h = parseFloat(couche)
-        if(n >= h) return couches[couche](n)
-    }
+    let couche = couches.find(couche => couche[1].max > n && couche[1].min <= n)
+    const couche_name = couche[0]
+    couche = couche[1]
+    const p = pourcentage_entre_indice(n, couche.max, couche.min)
+    
+    let rgb = couche_name === "MER" ? [
+        couche.colors[0], 
+        couche.colors[1], 
+        couche.colors[2] - Math.floor((1 - p) * couche.range)
+    ] : couche.colors.map(c => c - Math.floor(p * couche.range))
+    return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`
 }
 
 /*
