@@ -65,14 +65,14 @@
 
         // On génère la matrice de valeurs de l'île
         noiseSeed(parametres.seed)
-        let island = generer_ile(parametres.resolution, parametres.noise_scale, w, h, parametres.rayon_ile)
+        let island = generer_ile(parametres.resolution, parametres.noise_scale, w, h, parametres.rayon_ile, parametres.multiplicateur)
     
         // On dessine sur le canvas l'île en fonction de la résolution
-        dessiner_ile(ctx, parametres.resolution, island, parametres.multiplicateur)
+        dessiner_ile(ctx, parametres.resolution, island)
 
         const regenerate = () => {
-            island = generer_ile(parametres.resolution, parametres.noise_scale, w, h, parametres.rayon_ile)
-            dessiner_ile(ctx, parametres.resolution, island, parametres.multiplicateur)
+            island = generer_ile(parametres.resolution, parametres.noise_scale, w, h, parametres.rayon_ile, parametres.multiplicateur)
+            dessiner_ile(ctx, parametres.resolution, island)
         }
         
         document.getElementById("regenerate").addEventListener("click", () => {

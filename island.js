@@ -14,7 +14,7 @@ import { noise } from "./perlin.js"
     (permettra d'avoir une seule île)
     
 */
-function generer_ile(resolution, noise_scale, width, height, rayon_ile) {
+function generer_ile(resolution, noise_scale, width, height, rayon_ile, multiplicateur) {
     console.debug("fn - generer_ile", {
         resolution, noise_scale,
         width, height, rayon_ile
@@ -22,15 +22,20 @@ function generer_ile(resolution, noise_scale, width, height, rayon_ile) {
     console.time("generer_ile")
     const ile = []
     for(let x = 0; x < width * resolution; x++) {
-        const row = []
         for(let y = 0; y < height * resolution; y++) {
             let n = noise(x * (1 / resolution) * noise_scale, y * (1 / resolution) * noise_scale)
             const d = Math.sqrt((x - (width * resolution) / 2) ** 2 + (y - (height * resolution) / 2) ** 2)
-            n = n - d / rayon_ile
+            n = (n - d / rayon_ile) * multiplicateur
             
-            row.push(n)
+            const couleur = couleur_de_couche(n)
+            const point = {
+                x: x * (1 / resolution),
+                y: y * (1 / resolution),
+                n
+            }
+            if(ile[couleur] != undefined) ile[couleur].push(point);
+            else ile[couleur] = [point];
         }
-        ile.push(row)
     }
     console.timeEnd("generer_ile")
     return ile
@@ -108,12 +113,8 @@ const couches = {
     },
     "0.01": n => {
         const p = pourcentage_entre_indice(n, 0.01, 0.34)
-        let rgb = [
-            0,
-            75,
-            255 - Math.floor(p * (255 - 200))
-        ]
-        return "rgb(" + rgb.join(",") + ")" // Mer
+        let b = 255 - Math.floor(p * 55)
+        return `rgb(0, 75, ${b})` // Mer
     },
     "-100.0": () => "rgb(25, 75, 200)" // Ocean
 }
@@ -156,16 +157,15 @@ function couleur_de_couche(n) {
 
 */
 
-function dessiner_ile(ctx, resolution, island, octaves) {
+function dessiner_ile(ctx, resolution, island) {
     console.debug("fn - dessiner_ile", {
-        ctx, resolution, island, octaves
+        ctx, resolution, island
     })
     console.time("dessiner_ile")
-    for(const x in island) {
-        for(const y in island[x]) {
-            const n = island[x][y] * octaves
-            ctx.fillStyle = couleur_de_couche(n)
-            ctx.fillRect(x * (1 / resolution), y * (1 / resolution), 1 / resolution, 1 / resolution)
+    for(const couleur in island) {
+        ctx.fillStyle = couleur
+        for(const point of island[couleur]) {
+            ctx.fillRect(point.x, point.y, 1 / resolution, 1 / resolution)
         }
     }
     console.timeEnd("dessiner_ile")
