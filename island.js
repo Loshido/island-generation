@@ -165,4 +165,4 @@ function new_canvas_ctx(width, height) {
     return canvas.getContext("2d")
 }
 
-export { new_canvas_ctx, generer_ile, dessiner_ile }
+export { new_canvas_ctx, generer_ile, dessiner_ile, dessiner_foret, dessiner_arbre_plage}
