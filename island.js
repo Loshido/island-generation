@@ -145,14 +145,14 @@ function couleur_de_couche(n) {
 */
 
 function dessiner_ile(protocube, group, resolution, island, octaves) {
+    const geometry = new THREE.BoxGeometry(1, 1, 1);
     for(const x in island) {
         for(const y in island[x]) {
             const n = island[x][y] * octaves
             //ctx.fillStyle = couleur_de_couche(n)
             //ctx.fillRect(x * (1 / resolution), y * (1 / resolution), 1 / resolution, 1 / resolution)
-            let cube = protocube.clone();
-            cube.MeshBasicMaterial( { color : couleur_de_couche(n) } );
-            cube.position.set(x, n, y)
+            const cube = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { color: couleur_de_couche(n) } ) );
+            cube.position.set(x, n*25, y)
             group.add(cube)
         }
     }

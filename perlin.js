@@ -129,4 +129,4 @@ function noiseSeed(seed) {
         perlin[i] = lcg.rand();
     }
 };
-export {noise}
+export {noise};
