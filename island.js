@@ -47,7 +47,7 @@ const HERBE = {max: 0.7, min: 0.415, colors: [70, 110, 70], range: 50}
 const TERRE = {max: 0.415, min: 0.375, colors: [119, 63, 41], range: 41}
 const SABLE = {max: 0.375, min: 0.311, colors: [235, 235, 205], range: 50}
 const EAU_CLAIRE = {max: 0.311, min: 0.01, colors: [0, 100, 150], range: 55}
-const OCEAN = {max: 0.01, min: -100.0, colors: [25, 75, 200], range: 0}
+const OCEAN = {max: 0.01, min: -100.0, colors: [50, 80, 175], range: 0}
 const couches = Object.entries({
     NEIGE, ROCHERS, HERBE,
     TERRE, SABLE, EAU_CLAIRE,
