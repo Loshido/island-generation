@@ -1,7 +1,7 @@
 import { noise } from "./perlin.js"
 /*
     generer_ile(resolution, noise_scale, width, height, rayon_ile)
-
+mo
     Fonction qui renvoie une liste de liste de valeurs 
     correspondant à la valeur du bruit de perlin 
     par rapport sa position dans la matrice.

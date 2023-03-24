@@ -69,10 +69,14 @@
     
         // On dessine sur le canvas l'île en fonction de la résolution
         dessiner_ile(ctx, parametres.resolution, island)
+        dessiner_foret(ctx, parametres.resolution, island, parametres.octaves)
+        dessiner_arbre_plage(ctx, parametres.resolution, island, parametres.octaves)
 
         const regenerate = () => {
             island = generer_ile(parametres.resolution, parametres.noise_scale, w, h, parametres.rayon_ile, parametres.multiplicateur)
             dessiner_ile(ctx, parametres.resolution, island)
+            dessiner_foret(ctx, parametres.resolution, island, parametres.octaves)
+            dessiner_arbre_plage(ctx, parametres.resolution, island, parametres.octaves)
         }
         
         document.getElementById("regenerate").addEventListener("click", () => {
