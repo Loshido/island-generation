@@ -1,3 +1,7 @@
+import {noise} from "./perlin.js";
+import * as THREE from 'https://unpkg.com/three/build/three.module.js';
+
+
 /*
     generer_ile(resolution, noise_scale, width, height, rayon_ile)
 
@@ -19,7 +23,7 @@ function generer_ile(resolution, noise_scale, width, height, rayon_ile) {
         const row = []
         for(let y = 0; y < height * resolution; y++) {
             let n = noise(x * (1 / resolution) * noise_scale, y * (1 / resolution) * noise_scale)
-            const d = Math.sqrt((x - (w * resolution) / 2) ** 2 + (y - (h * resolution) / 2) ** 2)
+            const d = Math.sqrt((x - (width * resolution) / 2) ** 2 + (y - (height * resolution) / 2) ** 2)
             n = n - d / rayon_ile
             
             row.push(n)
@@ -140,12 +144,16 @@ function couleur_de_couche(n) {
 
 */
 
-function dessiner_ile(ctx, resolution, island, octaves) {
+function dessiner_ile(protocube, group, resolution, island, octaves) {
     for(const x in island) {
         for(const y in island[x]) {
             const n = island[x][y] * octaves
-            ctx.fillStyle = couleur_de_couche(n)
-            ctx.fillRect(x * (1 / resolution), y * (1 / resolution), 1 / resolution, 1 / resolution)
+            //ctx.fillStyle = couleur_de_couche(n)
+            //ctx.fillRect(x * (1 / resolution), y * (1 / resolution), 1 / resolution, 1 / resolution)
+            let cube = protocube.clone();
+            cube.MeshBasicMaterial( { color : couleur_de_couche(n) } );
+            cube.position.set(x, n, y)
+            group.add(cube)
         }
     }
 }
@@ -171,3 +179,5 @@ function new_canvas_ctx(width, height) {
     document.body.appendChild(canvas)
     return canvas.getContext("2d")
 }
+
+export {generer_ile, dessiner_ile}

@@ -9,24 +9,47 @@
 </head>
 <body>
     <script src="perlin.js"></script>
-    <script src="island.js"></script>
-    <script>
+    <script type="module" src="island.js"></script>
+    <script type="module">
+        import * as THREE from 'https://unpkg.com/three/build/three.module.js';
+        import {generer_ile, dessiner_ile} from "./island.js";
+
+
         // On récupère la taille de la page
         const [w, h] = [window.innerWidth, window.innerHeight]
 
         // On récupère l'accès au canvas
-        let ctx = new_canvas_ctx(w, h)
+        //let ctx = new_canvas_ctx(w, h)
 
         const resolution = 0.2
         const noise_scale = 0.0075
         const rayon_ile = 200
         const octaves = 1.5
 
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera( 75, w / h, 0.1, 1000 );
+
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize( w, h );
+        document.body.appendChild( renderer.domElement );
+
+        const geometry = new THREE.BoxGeometry( 0.01, 0.01, 0.01 );
+        const material = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
+        const protocube = new THREE.Mesh( geometry, material );
+        const group = new THREE.Group()
+        group.add( protocube );
+
+        camera.position.z = 100;
+
         // On génère la matrice de valeurs de l'île
         let island = generer_ile(resolution, noise_scale, w, h, rayon_ile)
     
         // On dessine sur le canvas l'île en fonction de la résolution
-        dessiner_ile(ctx, resolution, island, octaves)
+        dessiner_ile(protocube, group, resolution, island, octaves)
+        scene.add(group)
+        renderer.render( scene, camera)
+
+
 
         // On permet à l'utilisateur de régénérer l'île avec un click.
         document.body.addEventListener("click", () => {
