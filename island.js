@@ -44,9 +44,9 @@ const pourcentage_entre_indice = (n, max, min) => (n - min) / (max - min)
 const NEIGE = {max: 100.0, min: 0.85, colors: [255, 255, 255], range: 41}
 const ROCHERS = {max: 0.85, min: 0.7, colors: [82, 82, 82], range: 41}
 const HERBE = {max: 0.7, min: 0.415, colors: [70, 110, 70], range: 50}
-const TERRE = {max: 0.415, min: 0.375, colors: [119, 63, 41], range: 41}
-const SABLE = {max: 0.375, min: 0.311, colors: [235, 235, 205], range: 50}
-const EAU_CLAIRE = {max: 0.311, min: 0.01, colors: [0, 100, 150], range: 55}
+const TERRE = {max: 0.415, min: 0.395, colors: [119, 63, 41], range: 41}
+const SABLE = {max: 0.395, min: 0.311, colors: [235, 235, 205], range: 50}
+const EAU_CLAIRE = {max: 0.311, min: 0.01, colors: [108, 166, 206], range: 0}
 const OCEAN = {max: 0.01, min: -100.0, colors: [50, 80, 175], range: 0}
 const couches = Object.entries({
     NEIGE, ROCHERS, HERBE,
@@ -72,10 +72,10 @@ function couleur_de_couche(n) {
     couche = couche[1]
     const p = pourcentage_entre_indice(n, couche.max, couche.min)
     
-    let rgb = couche_name === "MER" ? [
-        couche.colors[0], 
-        couche.colors[1], 
-        couche.colors[2] - Math.floor((1 - p) * couche.range)
+    let rgb = couche_name == "EAU_CLAIRE" ? [
+        couche.colors[0] - Math.floor((1 - p) * 58),
+        couche.colors[1] - Math.floor((1 - p) * 86),
+        couche.colors[2] - Math.floor((1 - p) * 31)
     ] : couche.colors.map(c => c - Math.floor(p * couche.range))
     return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`
 }
@@ -105,41 +105,36 @@ function dessiner_ile(ctx, resolution, island) {
     console.timeEnd("dessiner_ile")
 }
 
-function dessiner_foret(ctx, resolution, island, octaves) {
-    console.time("dssiner_ile")
-    for(const x in island) {
-        for(const y in island[x]) {
-            const n = island[x][y] * octaves
-            if (n > 0.465 && n < 0.575){
-                arbre = Math.floor(Math.random() * 3)
+function dessiner_foret(ctx, resolution, island, densite) {
+    for(const couleur in island) {
+        for(const point in island[couleur]) {
+            const valeur = island[couleur][point]
+            if (valeur.n > 0.415 && valeur.n < 0.7){
+                let arbre = Math.floor(Math.random() * 1 / densite)
                 if (arbre == 1){
-                    ctx.fillStyle = "rgb(0, 50, 0)"}
-                else {
-                    ctx.fillStyle = couleur_de_couche(n)
+                    ctx.fillStyle = "rgb(0, 50, 0)"
+                    ctx.fillRect(valeur.x, valeur.y, 1 / resolution, 1 / resolution)
                 }
-                ctx.fillRect(x * (1 / resolution), y * (1 / resolution), 1 / resolution, 1 / resolution)
             }
         }
     }
-    console.timeEnd("dessiner_ile")
 }
 
-function dessiner_arbre_plage(ctx, resolution, island, octaves) {
-    for(const x in island) {
-        for(const y in island[x]) {
-            const n = island[x][y] * octaves
-            if (n > 0.35 && n < 0.375){
-                arbre_plage = Math.floor(Math.random() * 20)
-                if (arbre_plage == 5){
-                    ctx.fillStyle = "rgb(0, 100, 0)"}
-                else {
-                    ctx.fillStyle = couleur_de_couche(n)
-                }
-                ctx.fillRect(x * (1 / resolution), y * (1 / resolution), 1 / resolution, 1 / resolution)
-            }
-        }
-    }
-    console.timeEnd("dessiner_ile")
+function dessiner_arbre_plage(ctx, resolution, island) {
+    // for(const x in island) {
+    //     for(const y in island[x]) {
+    //         const n = island[x][y]
+    //         if (n > 0.35 && n < 0.375){
+    //             arbre_plage = Math.floor(Math.random() * 20)
+    //             if (arbre_plage == 5){
+    //                 ctx.fillStyle = "rgb(0, 100, 0)"}
+    //             else {
+    //                 ctx.fillStyle = couleur_de_couche(n)
+    //             }
+    //             ctx.fillRect(x * (1 / resolution), y * (1 / resolution), 1 / resolution, 1 / resolution)
+    //         }
+    //     }
+    // }
 }
 
 /*
