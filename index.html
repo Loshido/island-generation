@@ -39,7 +39,7 @@
         const group = new THREE.Group()
         group.add( protocube );
 
-        camera.position.z = 225;
+        camera.position.z = 200;
         camera.position.y = 30
         camera.position.x = 150
 
@@ -53,14 +53,29 @@
 				requestAnimationFrame( animate );
 
 				//group.rotation.x += 1;
-				//group.rotation.y += 0.01;
+				//group.rotation.y += 0.1;
 
 				renderer.render( scene, camera );
 			}
 
 		animate();
+        
+        window.addEventListener("keydown", () => {
 
-
+            switch (event.key) {
+                case "ArrowDown":
+                camera.position.z +=10
+                break;
+                case "ArrowUp":
+                camera.position.z -= 10
+                break;
+                case "ArrowLeft":
+                camera.position.x -=10
+                break;
+                case "ArrowRight":
+                camera.position.x += 10
+            }
+        })
 
         // On permet à l'utilisateur de régénérer l'île avec un click.
         document.body.addEventListener("click", () => {

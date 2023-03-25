@@ -152,8 +152,11 @@ function dessiner_ile(protocube, group, resolution, island, octaves) {
             //ctx.fillStyle = couleur_de_couche(n)
             //ctx.fillRect(x * (1 / resolution), y * (1 / resolution), 1 / resolution, 1 / resolution)
             const cube = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { color: couleur_de_couche(n) } ) );
-            cube.position.set(x, n*25, y)
-            group.add(cube)
+            if (couleur_de_couche(n) === "rgb(25, 25, 255)") {
+                cube.position.set(x -150 , 25*0.34, y);
+            }
+            else cube.position.set(x-150, n*25, y);
+            group.add(cube);
         }
     }
 }
