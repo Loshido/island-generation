@@ -44,9 +44,9 @@ const pourcentage_entre_indice = (n, max, min) => (n - min) / (max - min)
 const NEIGE = {max: 100.0, min: 0.85, colors: [255, 255, 255], range: 41}
 const ROCHERS = {max: 0.85, min: 0.7, colors: [82, 82, 82], range: 41}
 const HERBE = {max: 0.7, min: 0.415, colors: [70, 110, 70], range: 50}
-const TERRE = {max: 0.415, min: 0.375, colors: [119, 63, 41], range: 41}
-const SABLE = {max: 0.375, min: 0.34, colors: [235, 235, 205], range: 50}
-const MER = {max: 0.34, min: 0.01, colors: [0, 75, 255], range: 55}
+const TERRE = {max: 0.415, min: 0.395, colors: [119, 63, 41], range: 41}
+const SABLE = {max: 0.395, min: 0.311, colors: [235, 235, 205], range: 50}
+const MER = {max: 0.311, min: 0.01, colors: [0, 75, 255], range: 55}
 const OCEAN = {max: 0.01, min: -100.0, colors: [25, 75, 200], range: 0}
 const couches = Object.entries({
     NEIGE, ROCHERS, HERBE,
