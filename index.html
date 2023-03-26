@@ -10,24 +10,7 @@
 </head>
 <body>
     <section>
-        <div class="controls controls-game">
-            <div>
-                <pre>Z</pre> : avancer
-            </div>
-            <div>
-                <pre>S</pre> : reculer
-            </div>
-            <div>
-                <pre>Q</pre> : aller à gauche
-            </div>
-            <div>
-                <pre>D</pre> : aller à droite
-            </div>
-            <div>
-                <pre>X</pre> : Revenir au menu principale
-            </div>
-        </div>
-        <div class="controls controls-generation">
+        <div class="controls">
             <div id="regenerate">Regénérer</div>
             <div title="détermine l'identité de la génération">
                 <label for="seed">seed</label>
@@ -49,19 +32,19 @@
                 <label for="multiplicateur">Multiplicateur</label>
                 <input type="number" id="multiplicateur" step="0.1" max="100">
             </div>
-            <div id="play">Jouer</div>
         </div>
     </section>
-    <script src="nuage.js" type="module"></script>
     <script src="perlin.js" type="module"></script>
     <script src="island.js" type="module"></script>
-    <script src="game.js" type="module" defer></script>
+    <script src="nuage.js" type="module"></script>
     <script type="module">
-        import { generer_ile, dessiner_ile, new_canvas_ctx } from "./island.js"
+        import { new_canvas_ctx, generer_ile, dessiner_ile } from "./island.js"
         import { noiseSeed } from "./perlin.js"
-        import { gameStart } from "./game.js"
 
+        // On récupère la taille de la page
         let [w, h] = [window.innerWidth, window.innerHeight]
+
+        // On récupère l'accès au canvas
         let ctx = new_canvas_ctx(w, h)
 
         // Paramètres par défaut.
@@ -99,8 +82,6 @@
             noiseSeed(parametres.seed)
             regenerate()
         })
-
-        document.getElementById("play").addEventListener("click", gameStart)
 
         for(let indice of Object.keys(controls)) {
             controls[indice].value = parametres[indice]

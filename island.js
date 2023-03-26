@@ -1,5 +1,4 @@
 import { noise } from "./perlin.js"
-
 /*
     generer_ile(resolution, noise_scale, width, height, rayon_ile)
 
@@ -118,11 +117,10 @@ function dessiner_ile(ctx, resolution, island) {
 
 let cv = false
 function new_canvas_ctx(width, height) {
-    if(cv) document.getElementById("island").remove()
+    if(cv) document.querySelector("canvas").remove()
     cv = true
 
     const canvas = document.createElement("canvas")
-    canvas.id = "island"
     canvas.width = width
     canvas.height = height
     document.body.appendChild(canvas)
@@ -130,4 +128,4 @@ function new_canvas_ctx(width, height) {
     return canvas.getContext("2d")
 }
 
-export { generer_ile, dessiner_ile, new_canvas_ctx}
+export { new_canvas_ctx, generer_ile, dessiner_ile }
