@@ -37,7 +37,7 @@
     <script src="perlin.js" type="module"></script>
     <script src="island.js" type="module"></script>
     <script type="module">
-        import { new_canvas_ctx, generer_ile, dessiner_ile } from "./island.js"
+        import { new_canvas_ctx, generer_ile, dessiner_ile, dessiner_villes } from "./island.js"
         import { noiseSeed } from "./perlin.js"
 
         // On récupère la taille de la page
@@ -65,14 +65,16 @@
 
         // On génère la matrice de valeurs de l'île
         noiseSeed(parametres.seed)
-        let island = generer_ile(parametres.resolution, parametres.noise_scale, w, h, parametres.rayon_ile, parametres.multiplicateur)
+        let { island, villes} = generer_ile(parametres.resolution, parametres.noise_scale, w, h, parametres.rayon_ile, parametres.multiplicateur)
     
         // On dessine sur le canvas l'île en fonction de la résolution
         dessiner_ile(ctx, parametres.resolution, island)
+        dessiner_villes(ctx, villes)
 
         const regenerate = () => {
-            island = generer_ile(parametres.resolution, parametres.noise_scale, w, h, parametres.rayon_ile, parametres.multiplicateur)
+            let { island, villes } = generer_ile(parametres.resolution, parametres.noise_scale, w, h, parametres.rayon_ile, parametres.multiplicateur)
             dessiner_ile(ctx, parametres.resolution, island)
+            dessiner_villes(ctx, villes)
         }
         
         document.getElementById("regenerate").addEventListener("click", () => {

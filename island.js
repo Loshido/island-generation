@@ -1,4 +1,5 @@
 import { noise } from "./perlin.js"
+import { faker } from "https://cdn.skypack.dev/@faker-js/faker"
 /*
     generer_ile(resolution, noise_scale, width, height, rayon_ile)
 
@@ -20,16 +21,26 @@ function generer_ile(resolution, noise_scale, width, height, rayon_ile, multipli
         width, height, rayon_ile
     })
     console.time("generer_ile")
-    const ile = []
+    const island = []
+    const villes = []
     for(let x = 0; x < width * resolution; x++) {
         for(let y = 0; y < height * resolution; y++) {
             let n = noise(x * (1 / resolution) * noise_scale, y * (1 / resolution) * noise_scale)
             const d = Math.sqrt((x - (width * resolution) / 2) ** 2 + (y - (height * resolution) / 2) ** 2)
             n = (n - d / rayon_ile) * multiplicateur
             
+            if(n > 0.395 && n < 0.7 && Math.floor(Math.random() * 3000) === 0) {
+                const name = faker.address.cityName()
+                villes.push({
+                    x: x * (1 / resolution),
+                    y: y * (1 / resolution),
+                    n,
+                    name
+                })
+            }
             const couleur = couleur_de_couche(n)
-            if(ile[couleur] == undefined) ile[couleur] = []
-            ile[couleur].push({
+            if(island[couleur] == undefined) island[couleur] = []
+            island[couleur].push({
                 x: x * (1 / resolution),
                 y: y * (1 / resolution),
                 n
@@ -37,7 +48,7 @@ function generer_ile(resolution, noise_scale, width, height, rayon_ile, multipli
         }
     }
     console.timeEnd("generer_ile")
-    return ile
+    return { island, villes }
 }
 
 const pourcentage_entre_indice = (n, max, min) => (n - min) / (max - min)
@@ -115,10 +126,7 @@ function dessiner_ile(ctx, resolution, island) {
 
 */
 
-let cv = false
 function new_canvas_ctx(width, height) {
-    if(cv) document.querySelector("canvas").remove()
-    cv = true
 
     const canvas = document.createElement("canvas")
     canvas.width = width
@@ -128,4 +136,14 @@ function new_canvas_ctx(width, height) {
     return canvas.getContext("2d")
 }
 
-export { new_canvas_ctx, generer_ile, dessiner_ile }
+function dessiner_villes(ctx, villes) {
+    ctx.fillStyle = "rgb(255, 255, 255)"
+    ctx.baseLine = "middle"
+    ctx.textAlign = "center"
+    ctx.font = "1em sans-serif"
+    for(const ville of villes) {
+        ctx.fillText(ville.name, ville.x, ville.y)
+    }
+}
+
+export { new_canvas_ctx, generer_ile, dessiner_ile, dessiner_villes }
