@@ -11,6 +11,7 @@ body{
     overflow: hidden;}
 
 body > section{
+    z-index: 100;
     position: absolute;
     top: 0;
     left: 0;
@@ -47,3 +48,23 @@ body > section > div.controls #regenerate{
     padding: 8px 16px;
     cursor: pointer;
     transition: background-color .25s ease-in-out;}
+
+#nuage {
+    position: absolute;
+    width: 150%;
+    height: 150%;
+    z-index: 0;
+}
+
+@keyframes nuage {
+    from {
+        margin-left: -300px;
+    }
+    to{
+        margin-left: 0px;
+    }
+}
+
+.slide {
+    animation: nuage 25s infinite alternate;
+}
