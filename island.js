@@ -14,30 +14,40 @@ mo
     (permettra d'avoir une seule île)
     
 */
-function generer_ile(resolution, noise_scale, width, height, rayon_ile, multiplicateur) {
+function generer_ile(resolution, noise_scale, width, height, rayon_ile, multiplicateur, densite) {
     console.debug("fn - generer_ile", {
         resolution, noise_scale,
         width, height, rayon_ile
     })
     console.time("generer_ile")
-    const ile = []
+    const island = []
+    const arbres = []
     for(let x = 0; x < width * resolution; x++) {
         for(let y = 0; y < height * resolution; y++) {
             let n = noise(x * (1 / resolution) * noise_scale, y * (1 / resolution) * noise_scale)
             const d = Math.sqrt((x - (width * resolution) / 2) ** 2 + (y - (height * resolution) / 2) ** 2)
             n = (n - d / rayon_ile) * multiplicateur
-            
-            const couleur = couleur_de_couche(n)
-            if(ile[couleur] == undefined) ile[couleur] = []
-            ile[couleur].push({
-                x: x * (1 / resolution),
-                y: y * (1 / resolution),
-                n
-            });
+
+            if (n > 0.311 && n < 0.395 && Math.floor(Math.random() * 100) == 1) {
+                arbres.push({
+                    x: x * (1 / resolution),
+                    y: y * (1 / resolution),
+                    n,
+                    type: "palmier"
+                })
+            } else {
+                const couleur =  couleur_de_couche(n)
+                if(island[couleur] == undefined) island[couleur] = []
+                island[couleur].push({
+                    x: x * (1 / resolution),
+                    y: y * (1 / resolution),
+                    n
+                });
+            }
         }
     }
     console.timeEnd("generer_ile")
-    return ile
+    return { island, arbres }
 }
 
 const pourcentage_entre_indice = (n, max, min) => (n - min) / (max - min)
@@ -96,6 +106,7 @@ function dessiner_ile(ctx, resolution, island) {
         ctx, resolution, island
     })
     console.time("dessiner_ile")
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
     for(const couleur in island) {
         ctx.fillStyle = couleur
         for(const point of island[couleur]) {
@@ -105,36 +116,19 @@ function dessiner_ile(ctx, resolution, island) {
     console.timeEnd("dessiner_ile")
 }
 
-function dessiner_foret(ctx, resolution, island, densite) {
-    for(const couleur in island) {
-        for(const point in island[couleur]) {
-            const valeur = island[couleur][point]
-            if (valeur.n > 0.415 && valeur.n < 0.7){
-                let arbre = Math.floor(Math.random() * 1 / densite)
-                if (arbre == 1){
-                    ctx.fillStyle = "rgb(0, 50, 0)"
-                    ctx.fillRect(valeur.x, valeur.y, 1 / resolution, 1 / resolution)
-                }
-            }
-        }
+const palmer = new Image()
+palmer.src = "./arbres/palmier.png"
+function dessiner_arbres(ctx, resolution, arbres) {
+    console.debug("fn - dessiner_arbres", {
+        ctx, resolution, arbres
+    })
+    console.time("dessiner_arbres")
+    for(const arbre of arbres) {
+        const type = palmer
+        const taille = 4 * (1 / resolution)
+        ctx.drawImage(type, arbre.x - taille / 2, arbre.y - taille / 2, taille, taille)
     }
-}
-
-function dessiner_arbre_plage(ctx, resolution, island) {
-    // for(const x in island) {
-    //     for(const y in island[x]) {
-    //         const n = island[x][y]
-    //         if (n > 0.35 && n < 0.375){
-    //             arbre_plage = Math.floor(Math.random() * 20)
-    //             if (arbre_plage == 5){
-    //                 ctx.fillStyle = "rgb(0, 100, 0)"}
-    //             else {
-    //                 ctx.fillStyle = couleur_de_couche(n)
-    //             }
-    //             ctx.fillRect(x * (1 / resolution), y * (1 / resolution), 1 / resolution, 1 / resolution)
-    //         }
-    //     }
-    // }
+    console.timeEnd("dessiner_arbres")
 }
 
 /*
@@ -160,4 +154,4 @@ function new_canvas_ctx(width, height) {
     return canvas.getContext("2d")
 }
 
-export { new_canvas_ctx, generer_ile, dessiner_ile, dessiner_foret, dessiner_arbre_plage}
+export { new_canvas_ctx, generer_ile, dessiner_ile, dessiner_arbres}
