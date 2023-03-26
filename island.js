@@ -120,14 +120,14 @@ function dessiner_ile(ctx, resolution, island, couleurs) {
 
 */
 
-let cv = false
 function new_canvas_ctx(width, height) {
-    if(cv) document.querySelector("canvas").remove()
-    cv = true
+    const otherIsland = document.querySelector("canvas.island")
+    if(otherIsland) otherIsland.remove()
 
     const canvas = document.createElement("canvas")
     canvas.width = width
     canvas.height = height
+    canvas.classList.add("island")
     document.body.appendChild(canvas)
     console.debug("canvas created")
     return canvas.getContext("2d")
