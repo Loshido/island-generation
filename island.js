@@ -144,7 +144,7 @@ function couleur_de_couche(n) {
 
 */
 
-function dessiner_ile(protocube, group, resolution, island, octaves) {
+function dessiner_ile(group, island, octaves) {
     const geometry = new THREE.BoxGeometry(1, 1, 1);
     for(const x in island) {
         for(const y in island[x]) {
