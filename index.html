@@ -45,6 +45,7 @@
     </section>
     <script src="nuage.js" type="module" defer></script>
     <script type="module">
+        import controls from "./controls.js"
         import { new_canvas_ctx, generer_ile, dessiner_ile } from "./island.js"
         import { noiseSeed } from "./perlin.js"
 
@@ -65,15 +66,6 @@
             octaves: 4
         }
 
-        const controls = {
-            seed: document.getElementById("seed"),
-            noise_scale: document.getElementById("noise_scale"),
-            resolution: document.getElementById("resolution"),
-            rayon_ile: document.getElementById("rayon_ile"),
-            multiplicateur: document.getElementById("multiplicateur"),
-            octaves: document.getElementById("octaves")
-        }
-
         // On génère la matrice de valeurs de l'île
         noiseSeed(parametres.seed)
         let island = generer_ile(parametres.resolution, parametres.noise_scale, 
@@ -88,43 +80,15 @@
             dessiner_ile(ctx, parametres.resolution, island, parametres.couleurs)
         }
         
-        document.getElementById("regenerate").addEventListener("click", () => {
-            parametres.seed = Math.floor(Math.random() * 9999999)
-            controls.seed.value = parametres.seed
-            noiseSeed(parametres.seed)
-            regenerate()
-        })
-
-        document.getElementById("cloud_speed").addEventListener("input", ev => {
-            const node = document.getElementById("cloud_speed")
-            const value = parseInt(node.value)
-            document.querySelector(".slide").style.animationDuration = `${60 - value}s`
-        })
-
-        document.getElementById("couleurs").addEventListener("click", () => {
-            const node = document.getElementById("couleurs")
-            parametres.couleurs = !parametres.couleurs
-            if(parametres.couleurs) node.setAttribute("status", "active")
-            else node.attributes.removeNamedItem("status")
-            regenerate()
-        })
-
-        for(let indice of Object.keys(controls)) {
-            controls[indice].value = parametres[indice]
-            controls[indice].addEventListener("input", event => {
-                let value = parseFloat(controls[indice].value)
-                parametres[indice] = value
-                if(indice == "seed") noiseSeed(parametres.seed)
-                regenerate()
-            })
-        }
-
         // Lorsque la fenêtre change de taille 
         window.addEventListener("resize", () => {
             [w, h] = [window.innerWidth, window.innerHeight]
             ctx = new_canvas_ctx(w, h)
             regenerate()
         })
+
+        // On initialise les contrôles
+        controls(parametres, regenerate)
     </script>
     <canvas id="nuage" class="slide"></canvas>
 </body> 

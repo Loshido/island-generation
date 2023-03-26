@@ -11,6 +11,8 @@ import { noise, noiseDetail } from "./perlin.js"
     - la largeur du dessin
     - la hauteur du dessin
     - le rayon approximatif de l'île 
+    - le multiplicateur de la valeur du bruit
+    - le nombre d'octaves
     (permettra d'avoir une seule île)
     
 */
@@ -21,13 +23,20 @@ function generer_ile(resolution, noise_scale, width, height, rayon_ile, multipli
     })
     console.time("generer_ile")
     const ile = {}
+
+    // Fonction qui permet de définir le nombre d'octaves du perlin noise.
     noiseDetail(octaves, 0.5)
     for(let x = 0; x < width * resolution; x++) {
         for(let y = 0; y < height * resolution; y++) {
             let n = noise(x * (1 / resolution) * noise_scale, y * (1 / resolution) * noise_scale)
+
+            // On trouve la distance du point au centre grâce à la formule de Pythagore
             const d = Math.sqrt((x - (width * resolution) / 2) ** 2 + (y - (height * resolution) / 2) ** 2)
+
+            // On modifie la valeur du bruit en fonction de la distance 
+            // au centre et on le multiplie par le multiplicateur.
             n = (n - d / rayon_ile) * multiplicateur
-            
+            if(n < 0.01) continue
             const couleur = couleur_de_couche(n)
             if(ile[couleur] === undefined) ile[couleur] = []
             ile[couleur].push({
@@ -97,6 +106,12 @@ function dessiner_ile(ctx, resolution, island, couleurs) {
         ctx, resolution, island
     })
     console.time("dessiner_ile")
+
+    // On déssine l'océan mais derrière comme on le dessine en premier
+    if(couleurs) ctx.fillStyle = "rgb(25, 75, 200)"
+    else ctx.fillStyle = "rgb(0, 0, 0)"
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+
     for(const couleur in island) {
         if(couleurs) ctx.fillStyle = couleur
         for(const point of island[couleur]) {
