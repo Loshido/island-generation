@@ -11,6 +11,7 @@ body{
     overflow: hidden;}
 
 body > section{
+    z-index: 100;
     position: absolute;
     top: 0;
     left: 0;
@@ -52,7 +53,7 @@ body > section > div.controls #regenerate{
     position: absolute;
     width: 150%;
     height: 150%;
-
+    z-index: 0;
 }
 
 @keyframes nuage {
