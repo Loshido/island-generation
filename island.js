@@ -1,4 +1,4 @@
-import { noise } from "./perlin.js"
+import { noise, noiseDetail } from "./perlin.js"
 /*
     generer_ile(resolution, noise_scale, width, height, rayon_ile)
 
@@ -14,13 +14,14 @@ import { noise } from "./perlin.js"
     (permettra d'avoir une seule île)
     
 */
-function generer_ile(resolution, noise_scale, width, height, rayon_ile, multiplicateur) {
+function generer_ile(resolution, noise_scale, width, height, rayon_ile, multiplicateur, octaves) {
     console.debug("fn - generer_ile", {
         resolution, noise_scale,
         width, height, rayon_ile
     })
     console.time("generer_ile")
     const ile = {}
+    noiseDetail(octaves, 0.5)
     for(let x = 0; x < width * resolution; x++) {
         for(let y = 0; y < height * resolution; y++) {
             let n = noise(x * (1 / resolution) * noise_scale, y * (1 / resolution) * noise_scale)

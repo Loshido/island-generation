@@ -130,4 +130,4 @@ function noiseSeed(seed) {
     console.debug("new seed created - " + seed.toString())
 };
 
-export { noise, noiseSeed }
+export { noise, noiseSeed, noiseDetail }

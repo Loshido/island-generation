@@ -20,6 +20,10 @@
                 <label for="noise_scale">noise_scale</label>
                 <input type="number" id="noise_scale" step="0.001" min="0.001">
             </div>
+            <div title="détermine le nombre d'octaves du noise">
+                <label for="octaves">octaves</label>
+                <input type="number" id="octaves" max="10" min="1">
+            </div>
             <div title="détermine le nombre de carré par pixels">
                 <label for="resolution">resolution</label>
                 <input type="number" id="resolution" max="2" step="0.05" min="0.1">
@@ -59,7 +63,8 @@
             noise_scale: 0.0075,
             rayon_ile: 250,
             multiplicateur: 1.5,
-            couleurs: true
+            couleurs: true,
+            octaves: 4
         }
 
         const controls = {
@@ -67,18 +72,21 @@
             noise_scale: document.getElementById("noise_scale"),
             resolution: document.getElementById("resolution"),
             rayon_ile: document.getElementById("rayon_ile"),
-            multiplicateur: document.getElementById("multiplicateur")
+            multiplicateur: document.getElementById("multiplicateur"),
+            octaves: document.getElementById("octaves")
         }
 
         // On génère la matrice de valeurs de l'île
         noiseSeed(parametres.seed)
-        let island = generer_ile(parametres.resolution, parametres.noise_scale, w, h, parametres.rayon_ile, parametres.multiplicateur)
+        let island = generer_ile(parametres.resolution, parametres.noise_scale, 
+            w, h, parametres.rayon_ile, parametres.multiplicateur, parametres.octaves)
     
         // On dessine sur le canvas l'île en fonction de la résolution
         dessiner_ile(ctx, parametres.resolution, island, parametres.couleurs)
 
         const regenerate = () => {
-            island = generer_ile(parametres.resolution, parametres.noise_scale, w, h, parametres.rayon_ile, parametres.multiplicateur)
+            island = generer_ile(parametres.resolution, parametres.noise_scale, 
+            w, h, parametres.rayon_ile, parametres.multiplicateur, parametres.octaves)
             dessiner_ile(ctx, parametres.resolution, island, parametres.couleurs)
         }
         
