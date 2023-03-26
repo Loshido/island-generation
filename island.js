@@ -91,14 +91,18 @@ function couleur_de_couche(n) {
 
 */
 
-function dessiner_ile(ctx, resolution, island) {
+function dessiner_ile(ctx, resolution, island, couleurs) {
     console.debug("fn - dessiner_ile", {
         ctx, resolution, island
     })
     console.time("dessiner_ile")
     for(const couleur in island) {
-        ctx.fillStyle = couleur
+        if(couleurs) ctx.fillStyle = couleur
         for(const point of island[couleur]) {
+            if(!couleurs) {
+                const rgb = Math.floor(point.n * 255)
+                ctx.fillStyle = `rgb(${rgb}, ${rgb}, ${rgb})`
+            }
             ctx.fillRect(point.x, point.y, 1 / resolution, 1 / resolution)
         }
     }

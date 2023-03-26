@@ -12,11 +12,11 @@
     <section>
         <div class="controls">
             <div id="regenerate">Regénérer</div>
-            <div title="détermine l'identité de la génération">
+            <div title="détermine l'identité de la génération" class="long_input">
                 <label for="seed">seed</label>
                 <input type="number" id="seed" min="0" max="9999999">
             </div>
-            <div title="détermine le zoom sur le noise">
+            <div title="détermine le zoom sur le noise" class="long_input">
                 <label for="noise_scale">noise_scale</label>
                 <input type="number" id="noise_scale" step="0.001" min="0.001">
             </div>
@@ -31,6 +31,11 @@
             <div title="chaque point seront multiplier par cette variable">
                 <label for="multiplicateur">Multiplicateur</label>
                 <input type="number" id="multiplicateur" step="0.1" max="100">
+            </div>
+            <div title="Représentation du perlin noise" id="couleurs" class="bool" status="active">Affichage des couleurs</div>
+            <div title="indice de vitesse des nuages">
+                <label for="cloud_speed">Vitesse des nuages</label>
+                <input type="number" id="cloud_speed" step="1" max="50" min="10" value="35">
             </div>
         </div>
     </section>
@@ -53,7 +58,8 @@
             resolution: 0.25,
             noise_scale: 0.0075,
             rayon_ile: 250,
-            multiplicateur: 1.5
+            multiplicateur: 1.5,
+            couleurs: true
         }
 
         const controls = {
@@ -69,17 +75,31 @@
         let island = generer_ile(parametres.resolution, parametres.noise_scale, w, h, parametres.rayon_ile, parametres.multiplicateur)
     
         // On dessine sur le canvas l'île en fonction de la résolution
-        dessiner_ile(ctx, parametres.resolution, island)
+        dessiner_ile(ctx, parametres.resolution, island, parametres.couleurs)
 
         const regenerate = () => {
             island = generer_ile(parametres.resolution, parametres.noise_scale, w, h, parametres.rayon_ile, parametres.multiplicateur)
-            dessiner_ile(ctx, parametres.resolution, island)
+            dessiner_ile(ctx, parametres.resolution, island, parametres.couleurs)
         }
         
         document.getElementById("regenerate").addEventListener("click", () => {
             parametres.seed = Math.floor(Math.random() * 9999999)
             controls.seed.value = parametres.seed
             noiseSeed(parametres.seed)
+            regenerate()
+        })
+
+        document.getElementById("cloud_speed").addEventListener("input", ev => {
+            const node = document.getElementById("cloud_speed")
+            const value = parseInt(node.value)
+            document.querySelector(".slide").style.animationDuration = `${60 - value}s`
+        })
+
+        document.getElementById("couleurs").addEventListener("click", () => {
+            const node = document.getElementById("couleurs")
+            parametres.couleurs = !parametres.couleurs
+            if(parametres.couleurs) node.setAttribute("status", "active")
+            else node.attributes.removeNamedItem("status")
             regenerate()
         })
 

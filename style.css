@@ -33,10 +33,14 @@ body > section > div.controls > div{
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 15px;}
+    gap: 15px;
+    transition: background-color .25s ease-in-out;}
+body > section > div.controls > div.long_input > input[type="number"]{
+    width: 100px;
+}
 body > section > div.controls > div > input[type="number"]{
     color: #fff;
-    width: 100px;
+    width: 55px;
     font-weight: 900;
     font-size: 1em;
     background-color: transparent;
@@ -46,8 +50,11 @@ body > section > div.controls > div > input[type="number"]{
 body > section > div.controls #regenerate:hover{background-color: rgba(255, 255, 255, 0.5);}
 body > section > div.controls #regenerate{
     padding: 8px 16px;
-    cursor: pointer;
-    transition: background-color .25s ease-in-out;}
+    cursor: pointer;}
+.bool{cursor: pointer;}
+.bool:hover,
+.bool[status="active"]:hover{background-color: rgba(0,0,0,0.2);}
+.bool[status="active"]{background-color: rgba(0,0,0,0.4);}
 
 #nuage {
     position: absolute;
