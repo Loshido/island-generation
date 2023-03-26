@@ -32,12 +32,16 @@
                 <label for="multiplicateur">Multiplicateur</label>
                 <input type="number" id="multiplicateur" step="0.1" max="100">
             </div>
+            <div>
+                <label for="densite">Densité</label>
+                <input type="number" id="densite" step="0.01" max="0.2" >
+            </div>
         </div>
     </section>
     <script src="perlin.js" type="module"></script>
     <script src="island.js" type="module"></script>
     <script type="module">
-        import { new_canvas_ctx, generer_ile, dessiner_ile } from "./island.js"
+        import { new_canvas_ctx, generer_ile, dessiner_ile, dessiner_arbres } from "./island.js"
         import { noiseSeed } from "./perlin.js"
 
         // On récupère la taille de la page
@@ -52,7 +56,8 @@
             resolution: 0.25,
             noise_scale: 0.0075,
             rayon_ile: 250,
-            multiplicateur: 1.5
+            multiplicateur: 1.5,
+            densite: 0.01
         }
 
         const controls = {
@@ -60,19 +65,22 @@
             noise_scale: document.getElementById("noise_scale"),
             resolution: document.getElementById("resolution"),
             rayon_ile: document.getElementById("rayon_ile"),
-            multiplicateur: document.getElementById("multiplicateur")
+            multiplicateur: document.getElementById("multiplicateur"),
+            densite: document.getElementById("densite")
         }
 
         // On génère la matrice de valeurs de l'île
         noiseSeed(parametres.seed)
-        let island = generer_ile(parametres.resolution, parametres.noise_scale, w, h, parametres.rayon_ile, parametres.multiplicateur)
+        let { island, arbres } = generer_ile(parametres.resolution, parametres.noise_scale, w, h, parametres.rayon_ile, parametres.multiplicateur, parametres.densite)
     
         // On dessine sur le canvas l'île en fonction de la résolution
         dessiner_ile(ctx, parametres.resolution, island)
+        dessiner_arbres(ctx, parametres.resolution, arbres)
 
         const regenerate = () => {
-            island = generer_ile(parametres.resolution, parametres.noise_scale, w, h, parametres.rayon_ile, parametres.multiplicateur)
+            let { island, arbres } = generer_ile(parametres.resolution, parametres.noise_scale, w, h, parametres.rayon_ile, parametres.multiplicateur, parametres.densite)
             dessiner_ile(ctx, parametres.resolution, island)
+            dessiner_arbres(ctx, parametres.resolution, arbres)
         }
         
         document.getElementById("regenerate").addEventListener("click", () => {
