@@ -1,13 +1,14 @@
 import { noise } from "./perlin.js"
 
+const DENSITE_NUAGE = 0.09
 function generer_nuage() {
-    let rayon_nuage = 250;
+    console.time("generer_nuage")
     let canvas = document.getElementById("nuage");
     let ctx = canvas.getContext("2d");
     if(ctx) { 
         for(let x = 0; x < 500; x++) {
             for(let y = 0; y < 500; y++) {
-                let n = noise(x * 0.09, y * 0.09);
+                let n = noise(x * DENSITE_NUAGE, y * DENSITE_NUAGE);
 
                 if(n > 0.85) { 
                     ctx.fillStyle = "rgba( 240, 240, 240, 1)";
@@ -25,8 +26,7 @@ function generer_nuage() {
             }
         }
     }
+    console.timeEnd("generer_nuage")
 }
 
 window.addEventListener("load", generer_nuage);
-
-export { generer_nuage }
