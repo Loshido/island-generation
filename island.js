@@ -20,7 +20,7 @@ function generer_ile(resolution, noise_scale, width, height, rayon_ile, multipli
         width, height, rayon_ile
     })
     console.time("generer_ile")
-    const ile = []
+    const ile = {}
     for(let x = 0; x < width * resolution; x++) {
         for(let y = 0; y < height * resolution; y++) {
             let n = noise(x * (1 / resolution) * noise_scale, y * (1 / resolution) * noise_scale)
@@ -28,7 +28,7 @@ function generer_ile(resolution, noise_scale, width, height, rayon_ile, multipli
             n = (n - d / rayon_ile) * multiplicateur
             
             const couleur = couleur_de_couche(n)
-            if(ile[couleur] == undefined) ile[couleur] = []
+            if(ile[couleur] === undefined) ile[couleur] = []
             ile[couleur].push({
                 x: x * (1 / resolution),
                 y: y * (1 / resolution),
