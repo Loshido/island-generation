@@ -17,10 +17,6 @@ import { noise, noiseDetail } from "./perlin.js"
     
 */
 function generer_ile(resolution, noise_scale, width, height, rayon_ile, multiplicateur, octaves) {
-    console.debug("fn - generer_ile", {
-        resolution, noise_scale,
-        width, height, rayon_ile
-    })
     console.time("generer_ile")
     const ile = {}
 
@@ -37,9 +33,10 @@ function generer_ile(resolution, noise_scale, width, height, rayon_ile, multipli
             // au centre et on le multiplie par le multiplicateur.
             n = (n - d / rayon_ile) * multiplicateur
             if(n < 0.01) continue
-            const couleur = couleur_de_couche(n)
-            if(ile[couleur] === undefined) ile[couleur] = []
-            ile[couleur].push({
+            const { rgb, couche } = couleur_de_couche(n)
+            if(ile[couche] === undefined) ile[couche] = []
+            if(ile[couche][rgb] === undefined) ile[couche][rgb] = []
+            ile[couche][rgb].push({
                 x: x * (1 / resolution),
                 y: y * (1 / resolution),
                 n
@@ -76,6 +73,7 @@ const couches = Object.entries({
     immédiatement la couleur.
 
 */
+
 function couleur_de_couche(n) {
     let couche = couches.find(couche => couche[1].max > n && couche[1].min <= n)
     const couche_name = couche[0]
@@ -87,7 +85,10 @@ function couleur_de_couche(n) {
         couche.colors[1], 
         couche.colors[2] - Math.floor((1 - p) * couche.range)
     ] : couche.colors.map(c => c - Math.floor(p * couche.range))
-    return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`
+    return {
+        rgb: `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`,
+        couche: couche_name
+    }
 }
 
 /*
@@ -102,9 +103,6 @@ function couleur_de_couche(n) {
 */
 
 function dessiner_ile(ctx, resolution, island, couleurs) {
-    console.debug("fn - dessiner_ile", {
-        ctx, resolution, island
-    })
     console.time("dessiner_ile")
 
     // On déssine l'océan mais derrière comme on le dessine en premier
@@ -112,14 +110,16 @@ function dessiner_ile(ctx, resolution, island, couleurs) {
     else ctx.fillStyle = "rgb(0, 0, 0)"
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
 
-    for(const couleur in island) {
-        if(couleurs) ctx.fillStyle = couleur
-        for(const point of island[couleur]) {
-            if(!couleurs) {
-                const rgb = Math.floor(point.n * 255)
-                ctx.fillStyle = `rgb(${rgb}, ${rgb}, ${rgb})`
+    for(const couche in island) {
+        for(const rgb in island[couche]) {
+            if(couleurs) ctx.fillStyle = rgb
+            for(const point of island[couche][rgb]) {
+                if(!couleurs) {
+                    const rgb = Math.floor(point.n * 255)
+                    ctx.fillStyle = `rgb(${rgb}, ${rgb}, ${rgb})`
+                }
+                ctx.fillRect(point.x, point.y, 1 / resolution, 1 / resolution)
             }
-            ctx.fillRect(point.x, point.y, 1 / resolution, 1 / resolution)
         }
     }
     console.timeEnd("dessiner_ile")
