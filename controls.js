@@ -4,7 +4,9 @@ const controls = {
     resolution: document.getElementById("resolution"),
     rayon_ile: document.getElementById("rayon_ile"),
     multiplicateur: document.getElementById("multiplicateur"),
-    octaves: document.getElementById("octaves")
+    octaves: document.getElementById("octaves"),
+    villes: document.getElementById("biomes_ville"),
+    forets: document.getElementById("biomes_foret"),
 }
 
 let already_initialised = false

@@ -41,6 +41,14 @@
                 <label for="cloud_speed">Vitesse des nuages</label>
                 <input type="number" id="cloud_speed" step="1" max="50" min="10" value="35">
             </div>
+            <div title="indice de densité des zones de villes">
+                <label for="biomes_ville">Indice de zones de villes</label>
+                <input type="number" id="biomes_ville" step="5" max="100" min="0">
+            </div>
+            <div title="indice de densité des zones de forêts">
+                <label for="biomes_ville">Indice de zones de forêts</label>
+                <input type="number" id="biomes_foret" step="5" max="100" min="0">
+            </div>
         </div>
     </section>
     <script src="nuage.js" type="module" defer></script>
@@ -62,19 +70,23 @@
             rayon_ile: 250,
             multiplicateur: 1.5,
             couleurs: true,
-            octaves: 4
+            octaves: 4,
+            villes: 60,
+            forets: 50
         }
 
         // On génère la matrice de valeurs de l'île
         let island = generer_ile(parametres.resolution, parametres.noise_scale, w, h, 
-        parametres.rayon_ile, parametres.multiplicateur, parametres.octaves, parametres.seed)
+        parametres.rayon_ile, parametres.multiplicateur, parametres.octaves, parametres.seed,
+        parametres.villes, parametres.forets)
     
         // On dessine sur le canvas l'île en fonction de la résolution
         dessiner_ile(ctx, parametres.resolution, island, parametres.couleurs)
 
         const regenerate = () => {
             island = generer_ile(parametres.resolution, parametres.noise_scale, w, h, 
-            parametres.rayon_ile, parametres.multiplicateur, parametres.octaves, parametres.seed)
+            parametres.rayon_ile, parametres.multiplicateur, parametres.octaves, parametres.seed,
+            parametres.villes, parametres.forets)
             dessiner_ile(ctx, parametres.resolution, island, parametres.couleurs)
         }
         

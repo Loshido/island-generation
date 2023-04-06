@@ -16,7 +16,7 @@ import { noise, noiseDetail, noiseSeed } from "./perlin.js"
     (permettra d'avoir une seule île)
     
 */
-function generer_ile(resolution, noise_scale, width, height, rayon_ile, multiplicateur, octaves, seed) {
+function generer_ile(resolution, noise_scale, width, height, rayon_ile, multiplicateur, octaves, seed, villes, forets) {
     console.time("generer_ile")
     const ile = {}
 
@@ -49,8 +49,8 @@ function generer_ile(resolution, noise_scale, width, height, rayon_ile, multipli
     for(const couleurs in ile["HERBE"]) {
         for(const point of ile["HERBE"][couleurs]) {
             let n = noise(point.x * noise_scale, point.y * noise_scale)
-            if(n > 0.6) point.biome = "ville"
-            else if(n > 0.5) point.biome = "foret"
+            if(n > villes / 100) point.biome = "ville"
+            else if(n > forets / 100) point.biome = "foret"
             else point.biome = "plaine"
         }
     }
