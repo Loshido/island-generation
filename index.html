@@ -47,7 +47,6 @@
     <script type="module">
         import controls from "./controls.js"
         import { new_canvas_ctx, generer_ile, dessiner_ile } from "./island.js"
-        import { noiseSeed } from "./perlin.js"
 
         // On récupère la taille de la page
         let [w, h] = [window.innerWidth, window.innerHeight]
@@ -67,16 +66,15 @@
         }
 
         // On génère la matrice de valeurs de l'île
-        noiseSeed(parametres.seed)
-        let island = generer_ile(parametres.resolution, parametres.noise_scale, 
-            w, h, parametres.rayon_ile, parametres.multiplicateur, parametres.octaves)
+        let island = generer_ile(parametres.resolution, parametres.noise_scale, w, h, 
+        parametres.rayon_ile, parametres.multiplicateur, parametres.octaves, parametres.seed)
     
         // On dessine sur le canvas l'île en fonction de la résolution
         dessiner_ile(ctx, parametres.resolution, island, parametres.couleurs)
 
         const regenerate = () => {
-            island = generer_ile(parametres.resolution, parametres.noise_scale, 
-            w, h, parametres.rayon_ile, parametres.multiplicateur, parametres.octaves)
+            island = generer_ile(parametres.resolution, parametres.noise_scale, w, h, 
+            parametres.rayon_ile, parametres.multiplicateur, parametres.octaves, parametres.seed)
             dessiner_ile(ctx, parametres.resolution, island, parametres.couleurs)
         }
         
