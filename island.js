@@ -45,7 +45,7 @@ function generer_ile(resolution, noise_scale, width, height, rayon_ile, multipli
         }
     }
 
-    noiseSeed(Math.floor(Math.random() * 100000))
+    noiseSeed(-seed)
     for(const couleurs in ile["HERBE"]) {
         for(const point of ile["HERBE"][couleurs]) {
             let n = noise(point.x * noise_scale, point.y * noise_scale)
