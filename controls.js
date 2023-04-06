@@ -10,6 +10,8 @@ const controls = {
 let already_initialised = false
 // variable qui permet de ne pas réinitialiser les controls à chaque fois qu'on génère une nouvelle île
 
+const ihm = document.querySelector("body > section#ihm")
+
 // "export default" permet d'exporter la fonction initialisation_controls
 // afin de la récuperer un autre fichier de cette façon `import initialisation_controls from "./controls.js"`
 export default function initialisation_controls(parametres, regenerate) {
@@ -41,7 +43,7 @@ export default function initialisation_controls(parametres, regenerate) {
 
         // Tips pour inverser la valeur d'une variable booléenne
         parametres.couleurs = !parametres.couleurs
-
+        parametres.couleurs ? ihm.classList.remove("light") : ihm.classList.add("light")
         // On ajoute ou on supprime l'attribut "status" de la balise "couleurs" 
         // plutôt qu'utiliser une variable afin de pouvoir changer la vitesse 
         // des nuages depuis partout dans le js
@@ -63,7 +65,6 @@ export default function initialisation_controls(parametres, regenerate) {
     }
 
     let isIHMVisible = true
-    const ihm = document.querySelector("body > section#ihm")
     document.addEventListener("keypress", event => {
         if(event.code === "KeyH") {
             ihm.style.display = isIHMVisible ? "none" : "block"
