@@ -1,4 +1,4 @@
-import { noise, noiseDetail } from "./perlin.js"
+import { noise, noiseDetail, noiseSeed } from "./perlin.js"
 /*
     generer_ile(resolution, noise_scale, width, height, rayon_ile)
 
@@ -16,12 +16,13 @@ import { noise, noiseDetail } from "./perlin.js"
     (permettra d'avoir une seule île)
     
 */
-function generer_ile(resolution, noise_scale, width, height, rayon_ile, multiplicateur, octaves) {
+function generer_ile(resolution, noise_scale, width, height, rayon_ile, multiplicateur, octaves, seed) {
     console.time("generer_ile")
     const ile = {}
 
     // Fonction qui permet de définir le nombre d'octaves du perlin noise.
     noiseDetail(octaves, 0.5)
+    noiseSeed(seed)
     for(let x = 0; x < width * resolution; x++) {
         for(let y = 0; y < height * resolution; y++) {
             let n = noise(x * (1 / resolution) * noise_scale, y * (1 / resolution) * noise_scale)

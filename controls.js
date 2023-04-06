@@ -1,5 +1,3 @@
-import { noiseSeed } from "./perlin.js"
-
 const controls = {
     seed: document.getElementById("seed"),
     noise_scale: document.getElementById("noise_scale"),
@@ -23,9 +21,6 @@ export default function initialisation_controls(parametres, regenerate) {
         parametres.seed = Math.floor(Math.random() * 9999999)
         controls.seed.value = parametres.seed
         
-        // On change la seed pour changer la génération du bruit dans le fichier perlin.js
-        noiseSeed(parametres.seed)
-
         // On regénère et redessine l'île pour faire apparaitre les changements
         regenerate() 
     })
@@ -63,7 +58,6 @@ export default function initialisation_controls(parametres, regenerate) {
         controls[indice].addEventListener("input", event => {
             let value = parseFloat(controls[indice].value)
             parametres[indice] = value
-            if(indice == "seed") noiseSeed(parametres.seed)
             regenerate()
         })
     }
