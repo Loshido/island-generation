@@ -51,6 +51,16 @@ export default function initialisation_controls(parametres, regenerate) {
         else node.attributes.removeNamedItem("status")
         regenerate()
     })
+
+    controls.villes.addEventListener("input", () => {
+        const value = parseInt(controls.villes.value)
+        controls.forets.setAttribute("max", value)
+    })
+
+    controls.forets.addEventListener("input", () => {
+        const value = parseInt(controls.forets.value)
+        controls.villes.setAttribute("min", value)
+    })
     
     // On parcourt les entrées du tableau "controls" afin de les initialiser
     for(let indice of Object.keys(controls)) {
