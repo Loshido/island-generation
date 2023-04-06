@@ -106,8 +106,7 @@ function dessiner_ile(ctx, resolution, island, couleurs) {
     console.time("dessiner_ile")
 
     // On déssine l'océan mais derrière comme on le dessine en premier
-    if(couleurs) ctx.fillStyle = "rgb(25, 75, 200)"
-    else ctx.fillStyle = "rgb(0, 0, 0)"
+    ctx.fillStyle = couleurs ? "rgb(25, 75, 200)" : "rgb(0, 0, 0)"
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
 
     for(const couche in island) {
