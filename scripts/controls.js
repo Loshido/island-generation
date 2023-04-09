@@ -51,6 +51,19 @@ export default function initialisation_controls(parametres, regenerate) {
         else node.attributes.removeNamedItem("status")
         regenerate()
     })
+    document.getElementById("biomes").addEventListener("click", () => {
+        const node = document.getElementById("biomes")
+
+        // Tips pour inverser la valeur d'une variable booléenne
+        parametres.affichage_zones = !parametres.affichage_zones
+
+        // On ajoute ou on supprime l'attribut "status" de la balise "couleurs" 
+        // plutôt qu'utiliser une variable afin de pouvoir changer la vitesse 
+        // des nuages depuis partout dans le js
+        if(parametres.affichage_zones) node.setAttribute("status", "active")
+        else node.attributes.removeNamedItem("status")
+        regenerate()
+    })
 
     controls.villes.addEventListener("input", () => {
         const value = parseInt(controls.villes.value)

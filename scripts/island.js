@@ -16,47 +16,58 @@ import { noise, noiseDetail, noiseSeed } from "./perlin.js"
     (permettra d'avoir une seule île)
     
 */
-function generer_ile(resolution, noise_scale, width, height, rayon_ile, multiplicateur, octaves, seed, villes, forets) {
+// function generer_ile(resolution, noise_scale, width, height, rayon_ile, multiplicateur, octaves, seed, villes, forets) {
+function generer_ile(params, width, height) {
     console.time("generer_ile")
     const ile = {}
+    const res = params.resolution
 
     // Fonction qui permet de définir le nombre d'octaves du perlin noise.
-    noiseDetail(octaves, 0.5)
-    noiseSeed(seed)
-    for(let x = 0; x < width * resolution; x++) {
-        for(let y = 0; y < height * resolution; y++) {
-            let n = noise(x * (1 / resolution) * noise_scale, y * (1 / resolution) * noise_scale)
+    noiseDetail(params.octaves, 0.5)
+    noiseSeed(params.seed)
+    for(let x = 0; x < width * res; x++) {
+        for(let y = 0; y < height * res; y++) {
+            let n = noise(x * (1 / res) * params.noise_scale, y * (1 / res) * params.noise_scale)
 
             // On trouve la distance du point au centre grâce à la formule de Pythagore
-            const d = Math.sqrt((x - (width * resolution) / 2) ** 2 + (y - (height * resolution) / 2) ** 2)
+            const d = Math.sqrt((x - (width * res) / 2) ** 2 + (y - (height * res) / 2) ** 2)
 
             // On modifie la valeur du bruit en fonction de la distance 
             // au centre et on le multiplie par le multiplicateur.
-            n = (n - d / rayon_ile) * multiplicateur
+            n = (n - d / params.rayon_ile) * params.multiplicateur
             if(n < 0.01) continue
             const { rgb, couche } = couleur_de_couche(n)
             if(ile[couche] === undefined) ile[couche] = []
             if(ile[couche][rgb] === undefined) ile[couche][rgb] = []
             ile[couche][rgb].push({
-                x: x * (1 / resolution),
-                y: y * (1 / resolution),
+                x: x * (1 / res),
+                y: y * (1 / res),
                 n
             });
         }
     }
 
-    noiseSeed(-seed)
+    const zones = {
+        villes: [],
+        foret: []
+    }
+
+    noiseSeed(-params.seed)
     for(const couleurs in ile["HERBE"]) {
         for(const point of ile["HERBE"][couleurs]) {
-            let n = noise(point.x * noise_scale, point.y * noise_scale)
-            if(n > villes / 100) point.biome = "ville"
-            else if(n > forets / 100) point.biome = "foret"
-            else point.biome = "plaine"
+            let n = noise(point.x * params.noise_scale, point.y * params.noise_scale)
+            if(n > params.villes / 100) {
+                point.biome = "ville",
+                zones.villes.push(point)
+            } else if(n > params.forets / 100) {
+                point.biome = "foret"
+                zones.foret.push(point)
+            } else point.biome = "plaine"
         }
     }
 
     console.timeEnd("generer_ile")
-    return ile
+    return { ile, zones }
 }
 
 const pourcentage_entre_indice = (n, max, min) => (n - min) / (max - min)
@@ -114,7 +125,7 @@ function couleur_de_couche(n) {
 
 */
 
-function dessiner_ile(ctx, resolution, island, couleurs) {
+function dessiner_ile(ctx, resolution, island, couleurs, biomes) {
     console.time("dessiner_ile")
 
     // On déssine l'océan mais derrière comme on le dessine en premier
@@ -128,7 +139,7 @@ function dessiner_ile(ctx, resolution, island, couleurs) {
                 if(!couleurs) {
                     const rgb = Math.floor(point.n * 255)
                     ctx.fillStyle = `rgb(${rgb}, ${rgb}, ${rgb})`
-                } else if(couche === "HERBE") {
+                } else if(couche === "HERBE" && biomes) {
                     if(point.biome === "ville") ctx.fillStyle = "rgb(255, 0, 0)"
                     else if(point.biome === "foret") ctx.fillStyle = "rgb(0, 255, 0)"
                     else ctx.fillStyle = "rgb(255, 255, 0)"
