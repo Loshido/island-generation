@@ -5,8 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prototype génération d'île</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="./logo.png" type="image/png">
+    <link rel="stylesheet" href="./assets/style.css">
+    <link rel="icon" href="./assets/logo.png" type="image/png">
 </head>
 <body>
     <section>
@@ -51,10 +51,10 @@
             </div>
         </div>
     </section>
-    <script src="nuage.js" type="module" defer></script>
+    <script src="./scripts/nuage.js" type="module" defer></script>
     <script type="module">
-        import controls from "./controls.js"
-        import { new_canvas_ctx, generer_ile, dessiner_ile } from "./island.js"
+        import controls from "./script/controls.js"
+        import { new_canvas_ctx, generer_ile, dessiner_ile } from "./script/island.js"
 
         // On récupère la taille de la page
         let [w, h] = [window.innerWidth, window.innerHeight]
