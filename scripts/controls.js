@@ -86,4 +86,13 @@ export default function initialisation_controls(parametres, regenerate) {
             regenerate()
         })
     }
+
+    let isIHMVisible = true
+    const ihm = document.querySelector("body > section#ihm")
+    document.addEventListener("keypress", event => {
+        if(event.code === "KeyH") {
+            ihm.style.display = isIHMVisible ? "none" : "block"
+            isIHMVisible = !isIHMVisible
+        }
+    })
 }

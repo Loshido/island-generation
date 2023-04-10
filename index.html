@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,7 +9,7 @@
     <link rel="icon" href="./assets/logo.png" type="image/png">
 </head>
 <body>
-    <section>
+    <section id="ihm">
         <div class="controls">
             <div id="regenerate">Regénérer</div>
             <div title="détermine l'identité de la génération" class="long_input">
@@ -73,26 +73,26 @@
             multiplicateur: 1.5,
             couleurs: true,
             octaves: 4,
-            villes: 60,
-            forets: 50,
+            villes: 40,
+            forets: 30,
             affichage_zones: false
         }
 
         // On génère la matrice de valeurs de l'île
         let { ile, zones } = generer_ile(parametres, w, h)
-        generer_biomes(ctx, parametres.resolution, {
+        
+        // On dessine sur le canvas l'île en fonction de la résolution
+        dessiner_ile(ctx, parametres.resolution, ile, parametres.couleurs, parametres.affichage_zones)
+        if(!parametres.affichage_zones) generer_biomes(ctx, parametres.resolution, {
             villes: zones.villes,
             forets: zones.foret,
             palmiers: ile["SABLE"]
         })
         
-        // On dessine sur le canvas l'île en fonction de la résolution
-        dessiner_ile(ctx, parametres.resolution, ile, parametres.couleurs, parametres.affichage_zones)
-        
         const regenerate = () => {
             let { ile, zones } = generer_ile(parametres, w, h)
             dessiner_ile(ctx, parametres.resolution, ile, parametres.couleurs, parametres.affichage_zones)
-            generer_biomes(ctx, parametres.resolution, {
+            if(!parametres.affichage_zones) generer_biomes(ctx, parametres.resolution, {
                 villes: zones.villes,
                 forets: zones.foret,
                 palmiers: ile["SABLE"]
