@@ -145,42 +145,25 @@ function couleur_de_couche(n) {
 */
 
 function dessiner_ile(group, island, octaves) {
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
+
     for(const x in island) {
         for(const y in island[x]) {
             const n = island[x][y] * octaves
-            //ctx.fillStyle = couleur_de_couche(n)
-            //ctx.fillRect(x * (1 / resolution), y * (1 / resolution), 1 / resolution, 1 / resolution)
-            const cube = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { color: couleur_de_couche(n) } ) );
+            
             if (couleur_de_couche(n) === "rgb(25, 25, 255)") {
+                const geometry = new THREE.BoxGeometry(1, 1, 1);
+                const cube = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { color: couleur_de_couche(n) } ) );
                 cube.position.set(x -150 , 25*0.34, y);
+                group.add(cube);
+            } else { 
+                const geometry = new THREE.BoxGeometry(1, 2, 1);
+                const cube = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { color: couleur_de_couche(n) } ) );
+                cube.position.set(x-150, n*25, y);
+                group.add(cube);
             }
-            else cube.position.set(x-150, n*25, y);
-            group.add(cube);
+
         }
     }
-}
-
-/*
-
-    new_canvas_ctx(width, height)
-
-    Fonction qui créer un élément canvas dans 
-    la page et renvoie son context 2D (permet 
-    de contrôler le canvas).
-
-*/
-
-let cv = false
-function new_canvas_ctx(width, height) {
-    if(cv) document.querySelector("canvas").remove()
-    cv = true
-
-    const canvas = document.createElement("canvas")
-    canvas.width = width
-    canvas.height = height
-    document.body.appendChild(canvas)
-    return canvas.getContext("2d")
 }
 
 export {generer_ile, dessiner_ile}

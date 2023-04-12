@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="text">utilisez les flèches et les touches Z, Q, S, D  pour vous déplacer</div>
     <script src="perlin.js"></script>
     <script type="module" src="island.js"></script>
     <script type="module">
@@ -22,10 +21,10 @@
         // On récupère l'accès au canvas
         //let ctx = new_canvas_ctx(w, h)
 
-        const resolution = 0.4
+        const resolution = 0.17
         const noise_scale = 0.0075
-        const rayon_ile = 300
-        const octaves = 1.5
+        const rayon_ile = 200
+        const octaves = 1.2
 
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera( 75, w / h, 0.1, 1000 );
@@ -35,15 +34,18 @@
         document.body.appendChild( renderer.domElement );
         const group = new THREE.Group()
 
-        camera.position.z = resolution*1000;
-        camera.position.y = 30;
-        camera.position.x = 150
+
+        
+        camera.position.z = 0;
+        camera.position.y = 10;
+        camera.position.x = 0
+        camera.rotation.y = Math.PI
 
         // On génère la matrice de valeurs de l'île
         let island = generer_ile(resolution, noise_scale, w, h, rayon_ile)
     
         // On dessine sur le canvas l'île en fonction de la résolution
-        dessiner_ile(group, island, octaves)
+        dessiner_ile(group, island, octaves, resolution)
         scene.add(group)
         function animate() {
 				requestAnimationFrame( animate );
@@ -52,6 +54,7 @@
 				//group.rotation.y += 0.1;
 
 				renderer.render( scene, camera );
+                renderer.setClearColor( 0x7777ff);
 			}
 
 		animate();
@@ -61,10 +64,12 @@
 
             switch (event.code) {
                 case "ArrowDown":
-                camera.position.y -= 5
+                if (camera.position.y >=10) {
+                camera.position.y -= 1}
                 break;
                 case "ArrowUp":
-                camera.position.y += 5
+                if (camera.position.y <=50){
+                camera.position.y += 1}
                 break;
                 case "ArrowLeft":
                 camera.rotation.y += 0.1
@@ -72,31 +77,23 @@
                 case "ArrowRight":
                 camera.rotation.y -= 0.1
                 break;
-                case "PageDown": 
-                camera.rotation.x -=0.1
-                break;
-                case "PageUp": 
-                camera.rotation.x += 0.1
-                break;
                 case "KeyW":
-                camera.position.z -= 10
+                camera.position.z -= Math.cos(camera.rotation.y)
+                camera.position.x -= Math.sin(camera.rotation.y)
                 break;
                 case "KeyA": 
-                camera.position.x -= 10
+                camera.position.z -= Math.cos(camera.rotation.y + Math.PI/2)
+                camera.position.x -= Math.sin(camera.rotation.y + Math.PI/2)
                 break;
                 case "KeyD": 
-                camera.position.x += 10
+                camera.position.z += Math.cos(camera.rotation.y + Math.PI/2)
+                camera.position.x += Math.sin(camera.rotation.y + Math.PI/2)
                 break;
                 case "KeyS": 
-                camera.position.z += 10
+                camera.position.z += Math.cos(camera.rotation.y)
+                camera.position.x += Math.sin(camera.rotation.y)
+                break;
             }
-        })
-
-        // On permet à l'utilisateur de régénérer l'île avec un click.
-        document.body.addEventListener("click", () => {
-            noiseSeed(Math.floor(Math.random() * 100))
-            island = generer_ile(resolution, noise_scale, w, h, rayon_ile)
-            dessiner_ile(ctx, resolution, island, octaves)
         })
     </script>
 </body> 
