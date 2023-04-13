@@ -21,7 +21,7 @@
         // On récupère l'accès au canvas
         //let ctx = new_canvas_ctx(w, h)
 
-        const resolution = 0.1
+        const resolution = 0.15
         const noise_scale = 0.0075
         const rayon_ile = 200
         const octaves = 1.2
@@ -47,17 +47,10 @@
         // On dessine sur le canvas l'île en fonction de la résolution
         dessiner_ile(group, island, octaves, resolution)
         scene.add(group)
-        function animate() {
-				requestAnimationFrame( animate );
 
-				//group.rotation.x += 1;
-				//group.rotation.y += 0.1;
 
-				renderer.render( scene, camera );
-                renderer.setClearColor( 0x7777ff);
-			}
-
-		animate();
+	renderer.render( scene, camera );
+        renderer.setClearColor( 0x7777ff);
         
         //ajout de contrôles pour se déplacer sur l'île
         window.addEventListener("keydown", () => {
