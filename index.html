@@ -48,10 +48,17 @@
         dessiner_ile(group, island, octaves, resolution)
         scene.add(group)
 
-        renderer.setClearColor( 0x77b5fe);
-	renderer.render( scene, camera );
-	requestAnimationFrame( animate );
+	        function animate() {
+				requestAnimationFrame( animate );
 
+				//group.rotation.x += 1;
+				//group.rotation.y += 0.1;
+
+				renderer.render( scene, camera );
+                renderer.setClearColor(0x77b5fe);
+			}
+
+		animate();
         
         //ajout de contrôles pour se déplacer sur l'île
         window.addEventListener("keydown", () => {
