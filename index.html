@@ -48,9 +48,9 @@
         dessiner_ile(group, island, octaves, resolution)
         scene.add(group)
 
-
-	renderer.render( scene, camera );
         renderer.setClearColor( 0x7777ff);
+	renderer.render( scene, camera );
+
         
         //ajout de contrôles pour se déplacer sur l'île
         window.addEventListener("keydown", () => {
