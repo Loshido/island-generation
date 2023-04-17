@@ -15,9 +15,12 @@ function charger_images(arr, callback) {
     }
 }
 
-let chargees = false
-function dessiner_image(ctx, image, x, y, width, height) {
-    ctx.drawImage(image, x, y, width, height)
+function dessiner_image(ctx, image, x, y, width, height, angle) {
+    ctx.translate(x, y)
+    ctx.rotate(angle)
+    ctx.drawImage(image, 0, 0, width, height)
+    ctx.rotate(-angle)
+    ctx.translate(-x, -y)
 }
 
 const maisons = [

@@ -30,19 +30,22 @@ function generer_zone(ctx, zone, resolution, sprites, densite) {
     for(const point of zone) {
         if(Math.random() < densite) {
             const sprite = sprites[Math.floor(Math.random() * sprites.length)]
+            const rotation = Math.random() * Math.PI
             positions_sprites[sprite.file].push({
                 x: point.x, 
                 y: point.y,
                 width: sprite.width,
-                height: sprite.height
+                height: sprite.height,
+                angle: rotation
             })
+            console.log(rotation)
         }
     }
 
     for(const sprite in positions_sprites) {
         charger_images([sprite], () => {
             for(const position of positions_sprites[sprite]) {
-                dessiner_image(ctx, images[sprite], position.x, position.y, position.width / resolution / 3, position.height / resolution / 3)
+                dessiner_image(ctx, images[sprite], position.x, position.y, position.width / resolution / 3, position.height / resolution / 3, position.angle)
             }
         })
     }
