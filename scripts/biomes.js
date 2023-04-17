@@ -30,7 +30,7 @@ function generer_zone(ctx, zone, resolution, sprites, densite) {
     for(const point of zone) {
         if(Math.random() < densite) {
             const sprite = sprites[Math.floor(Math.random() * sprites.length)]
-            const rotation = Math.random() * Math.PI
+            const rotation = Math.random() * Math.PI * 2
             positions_sprites[sprite.file].push({
                 x: point.x, 
                 y: point.y,
