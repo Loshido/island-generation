@@ -76,8 +76,9 @@ const ROCHERS = {max: 0.85, min: 0.7, colors: [82, 82, 82], range: 41}
 const HERBE = {max: 0.7, min: 0.415, colors: [70, 110, 70], range: 50}
 const TERRE = {max: 0.415, min: 0.395, colors: [119, 63, 41], range: 41}
 const SABLE = {max: 0.395, min: 0.311, colors: [235, 235, 205], range: 50}
-const MER = {max: 0.311, min: 0.01, colors: [0, 75, 255], range: 55}
-const OCEAN = {max: 0.01, min: -100.0, colors: [25, 75, 200], range: 0}
+const MER = {max: 0.311, min: 0.01, colors: [0, 60, 150], range: 55}
+const OCEAN = {max: 0.01, min: -100.0, colors: [0, 75, 171], range: 0}
+
 const couches = Object.entries({
     NEIGE, ROCHERS, HERBE,
     TERRE, SABLE, MER,
@@ -104,9 +105,9 @@ function couleur_de_couche(n) {
     const p = pourcentage_entre_indice(n, couche.max, couche.min)
     
     let rgb = couche_name === "MER" ? [
-        couche.colors[0], 
-        couche.colors[1], 
-        couche.colors[2] - Math.floor((1 - p) * couche.range)
+        0 + Math.floor(25 * p),         
+        60 - Math.floor(- 100 * p),            
+        150 + Math.floor(21 * p),
     ] : couche.colors.map(c => c - Math.floor(p * couche.range))
     return {
         rgb: `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`,
@@ -129,7 +130,7 @@ function dessiner_ile(ctx, resolution, island, couleurs, biomes) {
     console.time("dessiner_ile")
 
     // On déssine l'océan mais derrière comme on le dessine en premier
-    ctx.fillStyle = couleurs ? "rgb(25, 75, 200)" : "rgb(0, 0, 0)"
+    ctx.fillStyle = couleurs ? "rgb(0, 60, 150 )" : "rgb(0, 0, 0)"
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
 
     for(const couche in island) {
