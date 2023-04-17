@@ -3,7 +3,6 @@ var images = {}
 function charger_images(arr, callback) {
     let nb_image_charge = 0;
     for (let i = 0; i < arr.length; i++){
-        // if(images[arr[i]]) continue
         const img = new Image();
         img.onload = image_charge;
         img.src = arr[i];
