@@ -141,8 +141,8 @@ function dessiner_ile(ctx, resolution, island, couleurs, biomes) {
                     const rgb = Math.floor(point.n * 255)
                     ctx.fillStyle = `rgb(${rgb}, ${rgb}, ${rgb})`
                 } else if(couche === "HERBE" && biomes) {
-                    if(point.biome === "ville") ctx.fillStyle = "rgb(235, 69, 158)"
-                    else if(point.biome === "foret") ctx.fillStyle = "rgb(87, 242, 135)"
+                    // if(point.biome === "ville") ctx.fillStyle = "rgb(235, 69, 158)"
+                    if(point.biome === "foret") ctx.fillStyle = "rgb(87, 242, 135)"
                     else ctx.fillStyle = "rgb(254, 231, 92)"
                 }
                 ctx.fillRect(point.x, point.y, 1 / resolution, 1 / resolution)

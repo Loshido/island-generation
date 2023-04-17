@@ -1,7 +1,7 @@
 import { dessiner_image, maisons, arbres, images, charger_images } from "./sprites.js"
 
 const DENSITE_FORET = 0.075;
-const DENSITE_VILLES = 0.1;
+// const DENSITE_VILLES = 0.1;
 const DENSITE_PALMIERS = 0.0125
 
 function generer_biomes(ctx, resolution, zones) {
@@ -10,7 +10,7 @@ function generer_biomes(ctx, resolution, zones) {
     generer_zone(ctx, zones.forets, resolution * 2, arbres.forets, DENSITE_FORET)
 
     // Villes
-    generer_zone(ctx, zones.villes, resolution * 5, maisons, DENSITE_VILLES)
+    // generer_zone(ctx, zones.villes, resolution * 5, maisons, DENSITE_VILLES)
 
     // Palmiers
     let palmiers = []

@@ -49,6 +49,11 @@ const arbres = {
             file: "../assets/palmier.png",
             width: 37,
             height: 34
+        },
+        {
+            file: "../assets/palmier2.png",
+            width: 37,
+            height: 34
         }
     ],
     forets: [
@@ -56,6 +61,26 @@ const arbres = {
             file: "../assets/arbre.png",
             width: 35,
             height: 38
+        },
+        {
+            file: "../assets/arbre1.png",
+            width: 30,
+            height: 30
+        },
+        {
+            file: "../assets/arbre2.png",
+            width: 30,
+            height: 30
+        },
+        {
+            file: "../assets/arbre3.png",
+            width: 30,
+            height: 30
+        },
+        {
+            file: "../assets/arbre4.png",
+            width: 30,
+            height: 30
         }
     ]
 }

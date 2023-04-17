@@ -5,7 +5,7 @@ const controls = {
     rayon_ile: document.getElementById("rayon_ile"),
     multiplicateur: document.getElementById("multiplicateur"),
     octaves: document.getElementById("octaves"),
-    villes: document.getElementById("biomes_ville"),
+    // villes: document.getElementById("biomes_ville"),
     forets: document.getElementById("biomes_foret"),
 }
 
@@ -65,15 +65,15 @@ export default function initialisation_controls(parametres, regenerate) {
         regenerate()
     })
 
-    controls.villes.addEventListener("input", () => {
-        const value = parseInt(controls.villes.value)
-        controls.forets.setAttribute("max", value)
-    })
+    // controls.villes.addEventListener("input", () => {
+    //     const value = parseInt(controls.villes.value)
+    //     controls.forets.setAttribute("max", value)
+    // })
 
-    controls.forets.addEventListener("input", () => {
-        const value = parseInt(controls.forets.value)
-        controls.villes.setAttribute("min", value)
-    })
+    // controls.forets.addEventListener("input", () => {
+    //     const value = parseInt(controls.forets.value)
+    //     controls.villes.setAttribute("min", value)
+    // })
     
     // On parcourt les entrées du tableau "controls" afin de les initialiser
     for(let indice of Object.keys(controls)) {
