@@ -47,11 +47,11 @@ const maisons = [
 ]
 const arbres = {
     palmiers: [
-        {
-            file: "../assets/palmier.png",
-            width: 37,
-            height: 34
-        },
+        // {
+        //     file: "../assets/palmier.png",
+        //     width: 37,
+        //     height: 34
+        // },
         {
             file: "../assets/palmier2.png",
             width: 37,
