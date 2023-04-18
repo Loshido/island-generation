@@ -38,7 +38,6 @@ function generer_zone(ctx, zone, resolution, sprites, densite) {
                 height: sprite.height,
                 angle: rotation
             })
-            console.log(rotation)
         }
     }
 

@@ -13,9 +13,11 @@ body{
 body > section{
     z-index: 100;
     position: absolute;
+    width: 100%;
+    height: 100%;
     top: 0;
     left: 0;
-    margin: 25px;
+    padding: 25px;
 }
 body > section > div.controls{
     display: flex;
@@ -23,6 +25,25 @@ body > section > div.controls{
     gap: 25px;
     flex-wrap: wrap;
 }
+body > section > a.game{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    
+    margin: 50px;
+    padding: 12.5px 25px;
+
+    font-size: 3em;
+    cursor: pointer;
+    user-select: none;
+    text-decoration: none;
+    color: #fff;
+
+    background-color: rgba(255, 255, 255, 0.25);
+    border-radius: 6.5px;
+    backdrop-filter: blur(5px);
+    transition: background-color .25s ease-in-out;}
+body > section > a.game:hover{background-color: rgba(255, 255, 255, 0.5);}
 body > section > div.controls > div{
     padding: 12.5px;
     background-color: rgba(255, 255, 255, 0.25);

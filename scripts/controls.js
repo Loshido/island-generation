@@ -8,6 +8,9 @@ const controls = {
     // villes: document.getElementById("biomes_ville"),
     forets: document.getElementById("biomes_foret"),
 }
+const PARAMS_EXCLUS = [
+    "couleurs", "affichage_zones"
+]
 
 let already_initialised = false
 // variable qui permet de ne pas réinitialiser les controls à chaque fois qu'on génère une nouvelle île
@@ -94,5 +97,17 @@ export default function initialisation_controls(parametres, regenerate) {
             ihm.style.display = isIHMVisible ? "none" : "block"
             isIHMVisible = !isIHMVisible
         }
+    })
+
+    const game = ihm.querySelector("a.game")
+    game.addEventListener("click", () => {
+        const url = new URL("http://localhost:5500/game.html")
+        
+        for(let indice of Object.keys(parametres)) {
+            if(PARAMS_EXCLUS.includes(indice)) continue
+            else url.searchParams.append(indice, parametres[indice])
+        }
+
+        location.href = url.toString()
     })
 }
