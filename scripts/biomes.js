@@ -4,7 +4,15 @@ const DENSITE_FORET = 0.075;
 // const DENSITE_VILLES = 0.1;
 const DENSITE_PALMIERS = 0.0125
 
-function generer_biomes(ctx, resolution, zones) {
+function generer_biomes(resolution, zones, w, h) {
+    const canvas = document.createElement("canvas")
+    canvas.width = w
+    canvas.height = h
+    canvas.id = "trees"
+    document.body.append(canvas)
+
+    const ctx = canvas.getContext("2d")
+
     console.time("generer_biomes")
     // Forêts,
     generer_zone(ctx, zones.forets, resolution * 2, arbres.forets, DENSITE_FORET)

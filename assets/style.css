@@ -9,6 +9,22 @@ body{
     font-weight: 700;
     color: #fff;
     overflow: hidden;}
+canvas{pointer-events: none;}
+body > canvas#game{
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    z-index: 5;
+}
+
+body > canvas#trees {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    z-index: 10;
+}
 
 body > section{
     z-index: 100;
@@ -81,7 +97,7 @@ body > section > div.controls #regenerate{
     position: absolute;
     width: 150%;
     height: 150%;
-    z-index: 0;
+    z-index: 100;
 }
 
 @keyframes nuage {

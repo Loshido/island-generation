@@ -71,13 +71,13 @@ function generer_ile(params, width, height) {
 }
 
 const pourcentage_entre_indice = (n, max, min) => (n - min) / (max - min)
-const NEIGE = {max: 100.0, min: 0.85, colors: [255, 255, 255], range: 41}
-const ROCHERS = {max: 0.85, min: 0.7, colors: [82, 82, 82], range: 41}
-const HERBE = {max: 0.7, min: 0.415, colors: [70, 110, 70], range: 50}
-const TERRE = {max: 0.415, min: 0.395, colors: [119, 63, 41], range: 41}
-const SABLE = {max: 0.395, min: 0.311, colors: [235, 235, 205], range: 50}
-const MER = {max: 0.311, min: 0.01, colors: [0, 60, 150], range: 55}
-const OCEAN = {max: 0.01, min: -100.0, colors: [0, 75, 171], range: 0}
+const NEIGE = {max: 100.0, min: 0.85, colors: [255, 255, 255], range: 41, speed: 0.4}
+const ROCHERS = {max: 0.85, min: 0.7, colors: [82, 82, 82], range: 41, speed: 0.6}
+const HERBE = {max: 0.7, min: 0.415, colors: [70, 110, 70], range: 50, speed: 1}
+const TERRE = {max: 0.415, min: 0.395, colors: [119, 63, 41], range: 41, speed: 1}
+const SABLE = {max: 0.395, min: 0.311, colors: [235, 235, 205], range: 50, speed: 0.8}
+const MER = {max: 0.311, min: 0.01, colors: [0, 60, 150], range: 55, speed: 0.3}
+const OCEAN = {max: 0.01, min: -100.0, colors: [0, 75, 171], range: 0, speed: 0.2}
 
 const couches = Object.entries({
     NEIGE, ROCHERS, HERBE,
@@ -175,4 +175,4 @@ function new_canvas_ctx(width, height) {
     return canvas.getContext("2d")
 }
 
-export { new_canvas_ctx, generer_ile, dessiner_ile }
+export { new_canvas_ctx, generer_ile, dessiner_ile, couches }

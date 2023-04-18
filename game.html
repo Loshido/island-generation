@@ -13,6 +13,7 @@
     <script type="module">
         import { new_canvas_ctx, generer_ile, dessiner_ile } from "./scripts/island.js"
         import { generer_biomes } from "./scripts/biomes.js"
+        import game from "./scripts/game.js"
 
         const url = new URL(window.location.href)
         
@@ -38,7 +39,6 @@
 
         url.searchParams.forEach((value, indice) => {
             if (indice in parametres) {
-                console.log(value, indice)
                 parametres[indice] = parseFloat(value)
             }
         })
@@ -48,11 +48,11 @@
         
         // On dessine sur le canvas l'île en fonction de la résolution
         dessiner_ile(ctx, parametres.resolution, ile, parametres.couleurs, false)
-        generer_biomes(ctx, parametres.resolution, {
+        generer_biomes(parametres.resolution, {
             // villes: zones.villes,
             forets: zones.foret,
             palmiers: ile["SABLE"]
-        })
+        }, w, h)
         
         // Lorsque la fenêtre change de taille 
         window.addEventListener("resize", () => {
@@ -60,6 +60,7 @@
             ctx = new_canvas_ctx(w, h)
             regenerate()
         })
+        game(parametres.resolution, ile, w, h)
     </script>
     <canvas id="nuage" class="slide"></canvas>
 </body> 

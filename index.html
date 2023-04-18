@@ -66,6 +66,7 @@
 
         // On récupère l'accès au canvas
         let ctx = new_canvas_ctx(w, h)
+        ctx.imageSmoothingEnabled = false
 
         // Paramètres par défaut.
         const parametres = {
@@ -86,20 +87,20 @@
         
         // On dessine sur le canvas l'île en fonction de la résolution
         dessiner_ile(ctx, parametres.resolution, ile, parametres.couleurs, parametres.affichage_zones)
-        if(!parametres.affichage_zones) generer_biomes(ctx, parametres.resolution, {
+        if(!parametres.affichage_zones) generer_biomes(parametres.resolution, {
             // villes: zones.villes,
             forets: zones.foret,
             palmiers: ile["SABLE"]
-        })
+        }, w, h)
         
         const regenerate = () => {
             let { ile, zones } = generer_ile(parametres, w, h)
             dessiner_ile(ctx, parametres.resolution, ile, parametres.couleurs, parametres.affichage_zones)
-            if(!parametres.affichage_zones) generer_biomes(ctx, parametres.resolution, {
+            if(!parametres.affichage_zones) generer_biomes(parametres.resolution, {
                 // villes: zones.villes,
                 forets: zones.foret,
                 palmiers: ile["SABLE"]
-            })
+            }, w, HTMLAreaElement)
         }
         
         // Lorsque la fenêtre change de taille 
