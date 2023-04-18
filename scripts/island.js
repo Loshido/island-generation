@@ -1,4 +1,50 @@
 import { noise, noiseDetail, noiseSeed } from "./perlin.js"
+
+const pourcentage_entre_indice = (n, max, min) => (n - min) / (max - min)
+const NEIGE = {max: 100.0, min: 0.85, colors: [255, 255, 255], range: 41}
+const ROCHERS = {max: 0.85, min: 0.7, colors: [82, 82, 82], range: 41}
+const HERBE = {max: 0.7, min: 0.415, colors: [70, 110, 70], range: 50}
+const TERRE = {max: 0.415, min: 0.395, colors: [119, 63, 41], range: 41}
+const SABLE = {max: 0.395, min: 0.311, colors: [235, 235, 205], range: 50}
+const MER = {max: 0.311, min: 0.01, colors: [0, 60, 150], range: 55}
+const OCEAN = {max: 0.01, min: -100.0, colors: [0, 75, 171], range: 0}
+
+const couches = Object.entries({
+    NEIGE, ROCHERS, HERBE,
+    TERRE, SABLE, MER,
+    OCEAN
+})
+
+/*
+
+    couleur_de_couche(n)w
+
+    Fonction qui renvoie la couleur de la couche 
+    pour une hauteur n. Elle parcourt toutes les
+    couches et vérifie que n est supérieur ou 
+    égale à la couche entrain d'être parcouru
+    si cette condition est rempli elle renvoie
+    immédiatement la couleur.
+
+*/
+
+function couleur_de_couche(n) {
+    let couche = couches.find(couche => couche[1].max > n && couche[1].min <= n)
+    const couche_name = couche[0]
+    couche = couche[1]
+    const p = pourcentage_entre_indice(n, couche.max, couche.min)
+    
+    let rgb = couche_name === "MER" ? [
+        0 + Math.floor(25 * p),         
+        60 - Math.floor(- 100 * p),            
+        150 + Math.floor(21 * p),
+    ] : couche.colors.map(c => c - Math.floor(p * couche.range))
+    return {
+        rgb: `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`,
+        couche: couche_name
+    }
+}
+
 /*
     generer_ile(resolution, noise_scale, width, height, rayon_ile)
 
@@ -49,7 +95,8 @@ function generer_ile(params, width, height) {
 
     const zones = {
         villes: [],
-        foret: []
+        foret: [],
+        palmiers: []
     }
 
     noiseSeed(-params.seed)
@@ -66,53 +113,16 @@ function generer_ile(params, width, height) {
         }
     }
 
+    const [min, max] = [SABLE.min * 1.1, SABLE.max * 0.9]
+    for(const couleurs in ile["SABLE"]) {
+        for(const point of ile["SABLE"][couleurs]) {
+            if(point.n >= min && point.n <= max) {
+                zones.palmiers.push(point)
+            }
+        }
+    }
     console.timeEnd("generer_ile")
     return { ile, zones }
-}
-
-const pourcentage_entre_indice = (n, max, min) => (n - min) / (max - min)
-const NEIGE = {max: 100.0, min: 0.85, colors: [255, 255, 255], range: 41}
-const ROCHERS = {max: 0.85, min: 0.7, colors: [82, 82, 82], range: 41}
-const HERBE = {max: 0.7, min: 0.415, colors: [70, 110, 70], range: 50}
-const TERRE = {max: 0.415, min: 0.395, colors: [119, 63, 41], range: 41}
-const SABLE = {max: 0.395, min: 0.311, colors: [235, 235, 205], range: 50}
-const MER = {max: 0.311, min: 0.01, colors: [0, 60, 150], range: 55}
-const OCEAN = {max: 0.01, min: -100.0, colors: [0, 75, 171], range: 0}
-
-const couches = Object.entries({
-    NEIGE, ROCHERS, HERBE,
-    TERRE, SABLE, MER,
-    OCEAN
-})
-
-/*
-
-    couleur_de_couche(n)w
-
-    Fonction qui renvoie la couleur de la couche 
-    pour une hauteur n. Elle parcourt toutes les
-    couches et vérifie que n est supérieur ou 
-    égale à la couche entrain d'être parcouru
-    si cette condition est rempli elle renvoie
-    immédiatement la couleur.
-
-*/
-
-function couleur_de_couche(n) {
-    let couche = couches.find(couche => couche[1].max > n && couche[1].min <= n)
-    const couche_name = couche[0]
-    couche = couche[1]
-    const p = pourcentage_entre_indice(n, couche.max, couche.min)
-    
-    let rgb = couche_name === "MER" ? [
-        0 + Math.floor(25 * p),         
-        60 - Math.floor(- 100 * p),            
-        150 + Math.floor(21 * p),
-    ] : couche.colors.map(c => c - Math.floor(p * couche.range))
-    return {
-        rgb: `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`,
-        couche: couche_name
-    }
 }
 
 /*

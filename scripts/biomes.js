@@ -2,7 +2,7 @@ import { dessiner_image, maisons, arbres, images, charger_images } from "./sprit
 
 const DENSITE_FORET = 0.075;
 // const DENSITE_VILLES = 0.1;
-const DENSITE_PALMIERS = 0.0125
+const DENSITE_PALMIERS = 0.075
 
 function generer_biomes(ctx, resolution, zones) {
     console.time("generer_biomes")
@@ -13,11 +13,7 @@ function generer_biomes(ctx, resolution, zones) {
     // generer_zone(ctx, zones.villes, resolution * 5, maisons, DENSITE_VILLES)
 
     // Palmiers
-    let palmiers = []
-    for(const couleurs in zones.palmiers) {
-        palmiers.push(...zones.palmiers[couleurs])
-    }
-    generer_zone(ctx, palmiers, resolution * 2, arbres.palmiers, DENSITE_PALMIERS)
+    generer_zone(ctx, zones.palmiers, resolution * 2, arbres.palmiers, DENSITE_PALMIERS)
     console.timeEnd("generer_biomes")
 }
 
@@ -38,7 +34,6 @@ function generer_zone(ctx, zone, resolution, sprites, densite) {
                 height: sprite.height,
                 angle: rotation
             })
-            console.log(rotation)
         }
     }
 
