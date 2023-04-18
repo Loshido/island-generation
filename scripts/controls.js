@@ -101,7 +101,7 @@ export default function initialisation_controls(parametres, regenerate) {
 
     const game = ihm.querySelector("a.game")
     game.addEventListener("click", () => {
-        const url = new URL("http://localhost:5500/game.html")
+        const url = new URL(location.origin + "/game.html")
         
         for(let indice of Object.keys(parametres)) {
             if(PARAMS_EXCLUS.includes(indice)) continue

@@ -5,6 +5,8 @@ const DENSITE_FORET = 0.075;
 const DENSITE_PALMIERS = 0.0125
 
 function generer_biomes(resolution, zones, w, h) {
+    const old = document.querySelector("canvas#trees")
+    if(old) old.remove()
     const canvas = document.createElement("canvas")
     canvas.width = w
     canvas.height = h
