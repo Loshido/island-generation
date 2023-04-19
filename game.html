@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prototype génération d'île</title>
+    <link rel="stylesheet" href="./assets/style.css">
+    <link rel="icon" href="./assets/logo.png" type="image/png">
+</head>
+<body>
+    <script src="./scripts/nuage.js" type="module" defer></script>
+    <script type="module">
+        import { new_canvas_ctx, generer_ile, dessiner_ile } from "./scripts/island.js"
+        import { generer_biomes } from "./scripts/biomes.js"
+        import game from "./scripts/game.js"
+
+        const url = new URL(window.location.href)
+        
+        // On récupère la taille de la page
+        let [w, h] = [window.innerWidth, window.innerHeight]
+
+        // On récupère l'accès au canvas
+        let ctx = new_canvas_ctx(w, h)
+
+        // Paramètres par défaut.
+        const parametres = {
+            seed: Math.floor(Math.random() * 9999999),
+            resolution: 0.25,
+            noise_scale: 0.0075,
+            rayon_ile: 250,
+            multiplicateur: 1.5,
+            couleurs: true,
+            octaves: 4,
+            // villes: 40,
+            forets: 50,
+            affichage_zones: false
+        }
+
+        url.searchParams.forEach((value, indice) => {
+            if (indice in parametres) {
+                parametres[indice] = parseFloat(value)
+            }
+        })
+
+        // On génère la matrice de valeurs de l'île
+        let { ile, zones } = generer_ile(parametres, w, h)
+        
+        // On dessine sur le canvas l'île en fonction de la résolution
+        dessiner_ile(ctx, parametres.resolution, ile, parametres.couleurs, false)
+        generer_biomes(parametres.resolution, {
+            // villes: zones.villes,
+            forets: zones.foret,
+            palmiers: ile["SABLE"]
+        }, w, h)
+        
+        // Lorsque la fenêtre change de taille 
+        window.addEventListener("resize", () => {
+            [w, h] = [window.innerWidth, window.innerHeight]
+            ctx = new_canvas_ctx(w, h)
+            regenerate()
+        })
+        game(parametres.resolution, ile, w, h)
+    </script>
+    <canvas id="nuage" class="slide"></canvas>
+</body> 
+</html>

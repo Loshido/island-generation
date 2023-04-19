@@ -4,8 +4,13 @@ const controls = {
     resolution: document.getElementById("resolution"),
     rayon_ile: document.getElementById("rayon_ile"),
     multiplicateur: document.getElementById("multiplicateur"),
-    octaves: document.getElementById("octaves")
+    octaves: document.getElementById("octaves"),
+    // villes: document.getElementById("biomes_ville"),
+    forets: document.getElementById("biomes_foret"),
 }
+const PARAMS_EXCLUS = [
+    "couleurs", "affichage_zones"
+]
 
 let already_initialised = false
 // variable qui permet de ne pas réinitialiser les controls à chaque fois qu'on génère une nouvelle île
@@ -51,6 +56,29 @@ export default function initialisation_controls(parametres, regenerate) {
         else node.attributes.removeNamedItem("status")
         regenerate()
     })
+    document.getElementById("biomes").addEventListener("click", () => {
+        const node = document.getElementById("biomes")
+
+        // Tips pour inverser la valeur d'une variable booléenne
+        parametres.affichage_zones = !parametres.affichage_zones
+
+        // On ajoute ou on supprime l'attribut "status" de la balise "couleurs" 
+        // plutôt qu'utiliser une variable afin de pouvoir changer la vitesse 
+        // des nuages depuis partout dans le js
+        if(parametres.affichage_zones) node.setAttribute("status", "active")
+        else node.attributes.removeNamedItem("status")
+        regenerate()
+    })
+
+    // controls.villes.addEventListener("input", () => {
+    //     const value = parseInt(controls.villes.value)
+    //     controls.forets.setAttribute("max", value)
+    // })
+
+    // controls.forets.addEventListener("input", () => {
+    //     const value = parseInt(controls.forets.value)
+    //     controls.villes.setAttribute("min", value)
+    // })
     
     // On parcourt les entrées du tableau "controls" afin de les initialiser
     for(let indice of Object.keys(controls)) {
@@ -65,10 +93,23 @@ export default function initialisation_controls(parametres, regenerate) {
     }
 
     let isIHMVisible = true
+    const ihm = document.querySelector("body > section#ihm")
     document.addEventListener("keypress", event => {
         if(event.code === "KeyH") {
             ihm.style.display = isIHMVisible ? "none" : "block"
             isIHMVisible = !isIHMVisible
         }
+    })
+
+    const game = ihm.querySelector("a.game")
+    game.addEventListener("click", () => {
+        const url = new URL(location.origin + "/game.html")
+        
+        for(let indice of Object.keys(parametres)) {
+            if(PARAMS_EXCLUS.includes(indice)) continue
+            else url.searchParams.append(indice, parametres[indice])
+        }
+
+        location.href = url.toString()
     })
 }

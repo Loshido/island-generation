@@ -127,7 +127,6 @@ function noiseSeed(seed) {
     for (let i = 0; i < PERLIN_SIZE + 1; i++) {
         perlin[i] = lcg.rand();
     }
-    console.debug("new seed created - " + seed.toString())
 };
 
 export { noise, noiseSeed, noiseDetail }
