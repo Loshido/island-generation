@@ -62,7 +62,6 @@ body > section > a.game{
 body > section > a.game:hover{background-color: rgba(255, 255, 255, 0.5);}
 body > section > div.controls > div{
     padding: 12.5px;
-    background-color: rgba(255, 255, 255, 0.25);
     backdrop-filter: blur(5px);
     border-radius: 6.5px;
 
@@ -84,14 +83,22 @@ body > section > div.controls > div > input[type="number"]{
     border: none;
     outline: none;}
 
-body > section > div.controls #regenerate:hover{background-color: rgba(255, 255, 255, 0.5);}
 body > section > div.controls #regenerate{
     padding: 8px 16px;
     cursor: pointer;}
+
 .bool{cursor: pointer;}
 .bool:hover,
-.bool[status="active"]:hover{background-color: rgba(0,0,0,0.2);}
-.bool[status="active"]{background-color: rgba(0,0,0,0.4);}
+
+body > section.dark > div.controls > div{background-color: rgba(0, 0, 0, 0.4);}
+body > section.dark > div.controls #regenerate:hover{background-color: rgba(0, 0, 0, 0.25);}
+.dark .bool[status="active"]:hover{background-color: rgba(0,0,0,0.2);}
+.dark .bool[status="active"]{background-color: rgba(0,0,0,0.4);}
+
+body > section.light > div.controls > div{background-color: rgba(255, 255, 255, 0.2);}
+body > section.light > div.controls #regenerate:hover{background-color: rgba(255, 255, 255, 0.5);}
+body .dark.light .bool:hover{background-color: rgba(255,255,255,0.5);}
+body .dark.light .bool{background-color: rgba(255,255,255,0.25);}
 
 #nuage {
     position: absolute;
@@ -101,14 +108,8 @@ body > section > div.controls #regenerate{
 }
 
 @keyframes nuage {
-    from {
-        margin-left: -300px;
-    }
-    to{
-        margin-left: 0px;
-    }
+    from {margin-left: -300px;}
+    to{margin-left: 0px;}
 }
 
-.slide {
-    animation: nuage 25s infinite alternate;
-}
+.slide {animation: nuage 25s infinite alternate;}

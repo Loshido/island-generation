@@ -9,4 +9,4 @@ Vous pouvez accéder à la documentation/ recherche dans ce document : [Google d
 
 Et vous pouvez accéder à [la page ici](https://island-generation.vercel.app/)
 
-![](https://cdn.discordapp.com/attachments/1080524523511763014/1086065989214556200/image.png)
+![](https://media.discordapp.net/attachments/501439957231992843/1098031801630466189/image.png)
