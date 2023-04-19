@@ -92,6 +92,8 @@ body > section > div.controls #regenerate{
 
 body > section.dark > div.controls > div{background-color: rgba(0, 0, 0, 0.4);}
 body > section.dark > div.controls #regenerate:hover{background-color: rgba(0, 0, 0, 0.25);}
+body > section.dark > a.game{background-color: rgba(0, 0, 0, 0.4);}
+body > section.dark > a.game:hover{background-color: rgba(0, 0, 0, 0.25);}
 .dark .bool[status="active"]:hover{background-color: rgba(0,0,0,0.2);}
 .dark .bool[status="active"]{background-color: rgba(0,0,0,0.4);}
 
@@ -99,6 +101,8 @@ body > section.light > div.controls > div{background-color: rgba(255, 255, 255, 
 body > section.light > div.controls #regenerate:hover{background-color: rgba(255, 255, 255, 0.5);}
 body .dark.light .bool:hover{background-color: rgba(255,255,255,0.5);}
 body .dark.light .bool{background-color: rgba(255,255,255,0.25);}
+body > section.light > a.game{background-color: rgba(255, 255, 255, 0.25);}
+body > section.light > a.game:hover{background-color: rgba(255, 255, 255, 0.5);}
 
 #nuage {
     position: absolute;
