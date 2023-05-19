@@ -1,4 +1,4 @@
-import { couches } from "./island.js"
+import { couches } from "./couches.js"
 
 let rightPressed = false;
 let leftPressed = false;

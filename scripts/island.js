@@ -1,5 +1,5 @@
 import { noise, noiseDetail, noiseSeed } from "./perlin.js"
-import { couleur_de_couche, couches} from "./couches.js"
+import { couleur_de_couche } from "./couches.js"
 /*
     generer_ile(resolution, noise_scale, width, height, rayon_ile)
 
@@ -106,7 +106,6 @@ function dessiner_ile(ctx, resolution, island, couleurs, biomes) {
         }
     }
     console.timeEnd("dessiner_ile")
-    console.log(couches)
 }
 
 /*
@@ -132,4 +131,4 @@ function new_canvas_ctx(width, height) {
     return canvas.getContext("2d")
 }
 
-export { new_canvas_ctx, generer_ile, dessiner_ile, couches }
+export { new_canvas_ctx, generer_ile, dessiner_ile }
