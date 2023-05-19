@@ -26,7 +26,7 @@ body > canvas#trees {
     z-index: 10;
 }
 
-body > section{
+body > section#ihm{
     z-index: 100;
     position: absolute;
     width: 100%;
@@ -35,13 +35,13 @@ body > section{
     left: 0;
     padding: 25px;
 }
-body > section > div.controls{
+body > section#ihm > div.controls{
     display: flex;
     flex-direction: row;
     gap: 25px;
     flex-wrap: wrap;
 }
-body > section > a.game{
+body > section#ihm > a.game{
     position: absolute;
     bottom: 0;
     right: 0;
@@ -59,8 +59,8 @@ body > section > a.game{
     border-radius: 6.5px;
     backdrop-filter: blur(5px);
     transition: background-color .25s ease-in-out;}
-body > section > a.game:hover{background-color: rgba(255, 255, 255, 0.5);}
-body > section > div.controls > div{
+body > section#ihm > a.game:hover{background-color: rgba(255, 255, 255, 0.5);}
+body > section#ihm > div.controls > div{
     padding: 12.5px;
     backdrop-filter: blur(5px);
     border-radius: 6.5px;
@@ -71,10 +71,10 @@ body > section > div.controls > div{
     justify-content: center;
     gap: 15px;
     transition: background-color .25s ease-in-out;}
-body > section > div.controls > div.long_input > input[type="number"]{
+body > section#ihm > div.controls > div.long_input > input[type="number"]{
     width: 100px;
 }
-body > section > div.controls > div > input[type="number"]{
+body > section#ihm > div.controls > div > input[type="number"]{
     color: #fff;
     width: 55px;
     font-weight: 900;
@@ -83,26 +83,26 @@ body > section > div.controls > div > input[type="number"]{
     border: none;
     outline: none;}
 
-body > section > div.controls #regenerate{
+body > section#ihm > div.controls #regenerate{
     padding: 8px 16px;
     cursor: pointer;}
 
 .bool{cursor: pointer;}
 .bool:hover,
 
-body > section.dark > div.controls > div{background-color: rgba(0, 0, 0, 0.4);}
-body > section.dark > div.controls #regenerate:hover{background-color: rgba(0, 0, 0, 0.25);}
-body > section.dark > a.game{background-color: rgba(0, 0, 0, 0.4);}
-body > section.dark > a.game:hover{background-color: rgba(0, 0, 0, 0.25);}
+body > section#ihm.dark > div.controls > div{background-color: rgba(0, 0, 0, 0.4);}
+body > section#ihm.dark > div.controls #regenerate:hover{background-color: rgba(0, 0, 0, 0.25);}
+body > section#ihm.dark > a.game{background-color: rgba(0, 0, 0, 0.4);}
+body > section#ihm.dark > a.game:hover{background-color: rgba(0, 0, 0, 0.25);}
 .dark .bool[status="active"]:hover{background-color: rgba(0,0,0,0.2);}
 .dark .bool[status="active"]{background-color: rgba(0,0,0,0.4);}
 
-body > section.light > div.controls > div{background-color: rgba(255, 255, 255, 0.2);}
-body > section.light > div.controls #regenerate:hover{background-color: rgba(255, 255, 255, 0.5);}
+body > section#ihm.light > div.controls > div{background-color: rgba(255, 255, 255, 0.2);}
+body > section#ihm.light > div.controls #regenerate:hover{background-color: rgba(255, 255, 255, 0.5);}
 body .dark.light .bool:hover{background-color: rgba(255,255,255,0.5);}
 body .dark.light .bool{background-color: rgba(255,255,255,0.25);}
-body > section.light > a.game{background-color: rgba(255, 255, 255, 0.25);}
-body > section.light > a.game:hover{background-color: rgba(255, 255, 255, 0.5);}
+body > section#ihm.light > a.game{background-color: rgba(255, 255, 255, 0.25);}
+body > section#ihm.light > a.game:hover{background-color: rgba(255, 255, 255, 0.5);}
 
 #nuage {
     position: absolute;
@@ -117,3 +117,97 @@ body > section.light > a.game:hover{background-color: rgba(255, 255, 255, 0.5);}
 }
 
 .slide {animation: nuage 25s infinite alternate;}
+
+section.couches-panel{
+    cursor: pointer;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+}
+section.couches-panel.off{display: none;}
+section.couches-panel > div.configuration{
+    cursor: default;
+    width: 35%;
+    min-width: 35%;
+    height: 100%;
+    margin-left: 65%;
+    background-color: rgba(0, 0, 0, 0.5);
+
+    backdrop-filter: blur(10px);
+    transition: width .2s ease-in-out, margin-left .2s ease-in-out;
+    overflow-y: auto;
+
+    display: flex;
+    flex-direction: column;
+}
+section.couches-panel > div.configuration:hover{
+    margin-left: 60%;
+    width: 40%;
+}
+
+section.couches-panel > div.configuration > div.couche{
+    width: 100%;
+    border-bottom: 1px solid rgba(75, 75, 75, 0.5);
+}
+
+div.couche{
+    display: grid;
+    grid-template-columns: 100px auto;
+}
+div.couche > div.rect{
+    width: 100%;
+    height: 100%;
+}
+div.couche#NEIGE{height: 130px !important;}
+div.couche#OCEAN{height: 130px !important;}
+
+div.couche > div.data{
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+}
+div.couche > div.data > h1{margin-bottom: 10px;}
+div.couche > div.data > div.params{
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+    align-items: center;
+}
+div.couche > div.data > div.params > * > h2{
+    font-size: 1em;
+    font-weight: 500;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.7);
+    padding-bottom: 5px;
+}
+div.couche > div.data > div.params input[type="number"]{
+    width: 60px;
+    color: white;
+    padding: .5em;
+    border: none;
+    border-radius: 2px;
+    outline: none;
+    background: rgba(255, 255, 255, 0.2);
+}
+div.couche > div.data > div.params > div.colors > .inputs{
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    align-items: center;
+}
+div.couche > div.data > div.params > div.colors > .inputs > input[type="color"]{
+    outline: none;
+    border: none;
+    background: none;
+    width: 50px;
+    height: 35px;
+}
+/* linear-gradient(70deg, blue, pink); */

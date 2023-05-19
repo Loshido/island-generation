@@ -31,6 +31,15 @@ export default function initialisation_controls(parametres, regenerate) {
         // On regénère et redessine l'île pour faire apparaitre les changements
         regenerate() 
     })
+
+    const master_couches = document.querySelector("section.couches-panel")
+    document.getElementById("couches").addEventListener("click", () => {
+        if(master_couches.classList.contains("off")) master_couches.classList.remove("off")
+    })
+
+    master_couches.addEventListener("click", ev => {
+        if(ev.target === master_couches) master_couches.classList.add("off")
+    })
     
     document.getElementById("cloud_speed").addEventListener("input", ev => {
         const node = document.getElementById("cloud_speed")
