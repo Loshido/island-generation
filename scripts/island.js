@@ -151,6 +151,7 @@ function dessiner_ile(ctx, resolution, island, couleurs, biomes) {
         }
     }
     console.timeEnd("dessiner_ile")
+    console.log(couches)
 }
 
 /*

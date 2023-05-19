@@ -1,7 +1,5 @@
 import { couches } from "./island.js"
 
-
-
 let rightPressed = false;
 let leftPressed = false;
 let upPressed = false;

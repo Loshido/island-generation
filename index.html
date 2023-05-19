@@ -118,6 +118,7 @@
 
         // On initialise les contrôles
         controls(parametres, regenerate)
+        document.addEventListener("couches-changed", () => regenerate())
     </script>
     <canvas id="nuage" class="slide"></canvas>
 </body> 

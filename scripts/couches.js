@@ -1,3 +1,5 @@
+const event = new Event("couches-changed")
+
 const NEIGE = {max: 100.0, min: 0.85, colors: [255, 255, 255], range: 41, speed: 0.4}
 const ROCHERS = {max: 0.85, min: 0.7, colors: [82, 82, 82], range: 41, speed: 0.6}
 const HERBE = {max: 0.7, min: 0.415, colors: [70, 110, 70], range: 50, speed: 1}
@@ -32,7 +34,7 @@ function hexToRgb(hex) {
     return [r, g, b]
 }
 
-function paramsNode(inputs) {
+function paramsNode(inputs, name) {
     const params = document.createElement("div")
     params.classList.add("params")
 
@@ -52,12 +54,19 @@ function paramsNode(inputs) {
             </div>
         </div>`
 
+    const couche_index = couches.findIndex(couche => couche[0] == name)
 
     const minInput = params.querySelector(".min")
     const colorInput = params.querySelector(".colors input[type=color]")
     const rangeInput = params.querySelector(".colors input[type=number]")
 
     minInput.value = min * 100
+    minInput.addEventListener("input", () => {
+        const value = parseInt(minInput.value) / 100
+        console.log(value, name)
+        document.dispatchEvent(event)
+    })
+
     colorInput.value = rgbToHex(...color)
     rangeInput.value = range
 
@@ -82,6 +91,9 @@ function paramsNode(inputs) {
     // et ensuite rect.style.background = bg et rect.style.backgroundImage = grad
     // tel que rect est obtenable par document.querySelector("#nom_de_la_couche > .rect")
 
+    /////////////////////////////////////////////////////////////
+    // document.dispatchEvent(event) permet de régénerer l'île //
+    /////////////////////////////////////////////////////////////
     return params
 }
 
@@ -138,18 +150,17 @@ const pourcentage_entre_indice = (n, max, min) => (n - min) / (max - min)
 
 function couleur_de_couche(n) {
     let couche = couches.find(couche => couche[1].max > n && couche[1].min <= n)
-    const couche_name = couche[0]
-    couche = couche[1]
-    const p = pourcentage_entre_indice(n, couche.max, couche.min)
+    if(couche === undefined) return { rgb: "rgb(0, 0, 0)", couche: "MER" }
+    const p = pourcentage_entre_indice(n, couche[1].max, couche[1].min)
     
-    let rgb = couche_name === "MER" ? [
+    let rgb = couche[0] === "MER" ? [
         0 + Math.floor(25 * p),         
         60 + Math.floor(100 * p),            
         150 + Math.floor(21 * p),
-    ] : couche.colors.map(c => c - Math.floor(p * couche.range))
+    ] : couche[1].colors.map(c => c - Math.floor(p * couche[1].range))
     return {
         rgb: `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`,
-        couche: couche_name
+        couche: couche[0]
     }
 }
 
