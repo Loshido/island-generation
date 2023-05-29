@@ -43,7 +43,8 @@ function hexToRgb(hex) {
     ] : null;
 }
 
-function paramsNode(inputs, Couche) {
+function paramsNode(inputs, Couche, nodes) {
+    const { rect, node } = nodes
     const params = document.createElement("div")
     params.classList.add("params")
 
@@ -66,6 +67,8 @@ function paramsNode(inputs, Couche) {
     const minInput = params.querySelector(".min")
     const colorInput = params.querySelector(".colors input[type=color]")
     const rangeInput = params.querySelector(".colors input[type=number]")
+
+
     
     minInput.value = min * 100
     minInput.addEventListener("input", () => {
@@ -75,6 +78,7 @@ function paramsNode(inputs, Couche) {
         const previousCoucheIndex = couches_keys.findIndex(key => key === Couche) + 1
         const previousCouche = couches_keys[previousCoucheIndex]
         if(previousCouche) couches[previousCouche].max = value
+        node.style.height = `${130 + (couches[Couche].max - couches[Couche].min) * 200}px`
         
         call_regeneration(50)
     })
@@ -88,6 +92,12 @@ function paramsNode(inputs, Couche) {
         const value = hexToRgb(colorInput.value)
         couches[Couche].colors = value
 
+        // Carré représentant la couleur de la couche
+        const range = parseInt(rangeInput.value)
+        const { bg, grad } = gradient(value, range)
+        rect.style.background = bg
+        rect.style.backgroundImage = grad
+
         call_regeneration(null)
     })
 
@@ -95,6 +105,12 @@ function paramsNode(inputs, Couche) {
     rangeInput.addEventListener("input", () => {
         const value = parseInt(rangeInput.value)
         couches[Couche].range = value
+
+        // Carré représentant la couleur de la couche
+        const colors = hexToRgb(colorInput.value)
+        const { bg, grad } = gradient(colors, value)
+        rect.style.background = bg
+        rect.style.backgroundImage = grad
 
         call_regeneration(150)
     })
@@ -137,7 +153,7 @@ function createCouche(name, inputs) {
     h1.style.textTransform = "capitalize"
     data.appendChild(h1)
     
-    const params = paramsNode(inputs, name)
+    const params = paramsNode(inputs, name, {rect, node})
 
     data.appendChild(params)
     node.appendChild(data)
