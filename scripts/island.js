@@ -20,7 +20,7 @@ import { couleur_de_couche } from "./couches.js"
 // function generer_ile(resolution, noise_scale, width, height, rayon_ile, multiplicateur, octaves, seed, villes, forets) {
 function generer_ile(params, width, height) {
     console.time("generer_ile")
-    const ile = {}
+    const ile = []
     const res = params.resolution
 
     // Fonction qui permet de définir le nombre d'octaves du perlin noise.

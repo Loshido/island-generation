@@ -1,18 +1,27 @@
 const event = new Event("couches-changed")
 
-const NEIGE = {max: 100.0, min: 0.85, colors: [255, 255, 255], range: 41, speed: 0.4}
-const ROCHERS = {max: 0.85, min: 0.7, colors: [82, 82, 82], range: 41, speed: 0.6}
-const HERBE = {max: 0.7, min: 0.415, colors: [70, 110, 70], range: 50, speed: 1}
-const TERRE = {max: 0.415, min: 0.395, colors: [119, 63, 41], range: 41, speed: 1}
-const SABLE = {max: 0.395, min: 0.311, colors: [235, 235, 205], range: 50, speed: 0.8}
-const MER = {max: 0.311, min: 0.01, colors: [0, 60, 150], range: 55, speed: 0.3}
-const OCEAN = {max: 0.01, min: -100.0, colors: [0, 75, 171], range: 0, speed: 0.2}
+let lastRegeneration = Date.now()
+function call_regeneration(dt) {
+    const now = Date.now()
+    if(dt === null || lastRegeneration + dt < now) {
+        document.dispatchEvent(event)
+        lastRegeneration = now
+    }
+}
 
-const couches = Object.entries({
-    NEIGE, ROCHERS, HERBE,
-    TERRE, SABLE, MER,
-    OCEAN
-})
+/////////////////////////////////////////////////////////////
+// document.dispatchEvent(event) permet de régénerer l'île //
+/////////////////////////////////////////////////////////////
+
+const couches = {}
+couches["NEIGE"] = {max: 100.0, min: 0.85, colors: [255, 255, 255], range: 41, speed: 0.4}
+couches["ROCHERS"] = {max: 0.85, min: 0.7, colors: [82, 82, 82], range: 41, speed: 0.6}
+couches["HERBE"] = {max: 0.7, min: 0.415, colors: [70, 110, 70], range: 50, speed: 1}
+couches["TERRE"] = {max: 0.415, min: 0.395, colors: [119, 63, 41], range: 41, speed: 1}
+couches["SABLE"] = {max: 0.395, min: 0.311, colors: [235, 235, 205], range: 50, speed: 0.8}
+couches["MER"] = {max: 0.311, min: 0.01, colors: [0, 60, 150], range: 55, speed: 0.3}
+couches["OCEAN"] = {max: 0.01, min: -100.0, colors: [0, 75, 171], range: 0, speed: 0.2}
+const couches_keys = Object.keys(couches)
 
 const master = document.querySelector("section.couches-panel > div.configuration")
 
@@ -26,19 +35,19 @@ function rgbToHex(r, g, b) {
 }
 
 function hexToRgb(hex) {
-    // StackOverflow -> stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
-    var bigint = parseInt(hex, 16);
-    var r = (bigint >> 16) & 255;
-    var g = (bigint >> 8) & 255;
-    var b = bigint & 255;
-    return [r, g, b]
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? [
+        parseInt(result[1], 16),
+        parseInt(result[2], 16),
+        parseInt(result[3], 16)
+    ] : null;
 }
 
-function paramsNode(inputs, name) {
+function paramsNode(inputs, Couche) {
     const params = document.createElement("div")
     params.classList.add("params")
 
-    const { min, color, range } = inputs
+    const { min, colors, range } = inputs
 
     params.innerHTML = `
         <div class="indices">
@@ -54,46 +63,42 @@ function paramsNode(inputs, name) {
             </div>
         </div>`
 
-    const couche_index = couches.findIndex(couche => couche[0] == name)
-
     const minInput = params.querySelector(".min")
     const colorInput = params.querySelector(".colors input[type=color]")
     const rangeInput = params.querySelector(".colors input[type=number]")
-
+    
     minInput.value = min * 100
     minInput.addEventListener("input", () => {
         const value = parseInt(minInput.value) / 100
-        console.log(value, name)
-        document.dispatchEvent(event)
+        couches[Couche].min = value
+
+        const previousCoucheIndex = couches_keys.findIndex(key => key === Couche) + 1
+        const previousCouche = couches_keys[previousCoucheIndex]
+        if(previousCouche) couches[previousCouche].max = value
+        
+        call_regeneration(50)
     })
 
-    colorInput.value = rgbToHex(...color)
+    let lastInput = Date.now()
+    colorInput.value = rgbToHex(...colors)
+    colorInput.addEventListener("input", () => {
+        if(Date.now() - lastInput < 200) return
+        lastInput = Date.now()
+
+        const value = hexToRgb(colorInput.value)
+        couches[Couche].colors = value
+
+        call_regeneration(null)
+    })
+
     rangeInput.value = range
+    rangeInput.addEventListener("input", () => {
+        const value = parseInt(rangeInput.value)
+        couches[Couche].range = value
 
-    // Il faudrait que lorsque les valeurs de minInput, colorInput, rangeInput changent, 
-    // les valeurs de la variable "couches" changent aussi.
-    // On peut utiliser l'événement "input"
-
-    // De plus attention j'ai mis x100 à l'indice pour que ça soit plus lisible. 
-    // Ducoup faut bien diviser par 100 lorsqu'on met dans "couches"
-
-    // ensuite il faut faire en sorte que lorsque que l'on change la valeur d'un indice, l'indice au dessus sois inférieur 
-    // donc par exemple if(indice > indice_dessus) indice = indice - 5
-
-    // Enfin faudra changer la hauteur de l'élément en fonction de ses indices 
-    // avec node.style.height = `${130 + (inputs.max - inputs.min) * 200}px`
-    // tel que node est obtenable par document.getElementById("nom_de_la_couche")
-    // et que inputs.max et inputs.min sont les indices de la couche
-    // 130 c'est la valeur minimum et 200 c'est pour multiplier par 100 et 2 pour avoir une hauteur correcte
-
-    // Et faudra également changer le dégradé de couleur de la couche à chaque fois qu'on change la couleur ou le "range" (juste à coté de la couleur)
-    // avec const { bg, grad } = gradient(inputs.color, inputs.range)
-    // et ensuite rect.style.background = bg et rect.style.backgroundImage = grad
-    // tel que rect est obtenable par document.querySelector("#nom_de_la_couche > .rect")
-
-    /////////////////////////////////////////////////////////////
-    // document.dispatchEvent(event) permet de régénerer l'île //
-    /////////////////////////////////////////////////////////////
+        call_regeneration(150)
+    })
+    
     return params
 }
 
@@ -116,7 +121,7 @@ function createCouche(name, inputs) {
     rect.classList.add("rect")
     node.appendChild(rect)
 
-    const { bg, grad } = gradient(inputs.color, inputs.range)
+    const { bg, grad } = gradient(inputs.colors, inputs.range)
     rect.style.background = bg
     rect.style.backgroundImage = grad
 
@@ -139,28 +144,32 @@ function createCouche(name, inputs) {
     master.appendChild(node)
 }
 
-couches.forEach(([name, inputs]) => createCouche(name, {
-    max: inputs.max,
-    min: inputs.min,
-    color: inputs.colors,
-    range: inputs.range
-}))
+
+for(const couche in couches) {
+    createCouche(couche, couches[couche])
+}
+
+function get_couche(n) {
+    for(const couche in couches) {
+        if(couches[couche].max > n && couches[couche].min <= n) return [couche, couches[couche]]
+    }
+    return ["MER", "undefined"]
+}
 
 const pourcentage_entre_indice = (n, max, min) => (n - min) / (max - min)
-
 function couleur_de_couche(n) {
-    let couche = couches.find(couche => couche[1].max > n && couche[1].min <= n)
-    if(couche === undefined) return { rgb: "rgb(0, 0, 0)", couche: "MER" }
-    const p = pourcentage_entre_indice(n, couche[1].max, couche[1].min)
+    let [ couche, data ] = get_couche(n)
+    if(data === undefined) return { rgb: "rgb(0, 0, 0)", couche}
+    const p = pourcentage_entre_indice(n, data.max, data.min)
     
-    let rgb = couche[0] === "MER" ? [
+    let rgb = couche === "MER" ? [
         0 + Math.floor(25 * p),         
         60 + Math.floor(100 * p),            
         150 + Math.floor(21 * p),
-    ] : couche[1].colors.map(c => c - Math.floor(p * couche[1].range))
+    ] : data.colors.map(c => c - Math.floor(p * data.range))
     return {
         rgb: `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`,
-        couche: couche[0]
+        couche
     }
 }
 
