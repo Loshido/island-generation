@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAGE GAME</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="./assets/logo.png" type="image/png">
+</head>
+<body>
+    <a href="index.html"><h2 id="retour2">Îles</h2></a>
+    <h1 id="bloc">
+        <div id="progress"></div>
+        </h1>
+    
+    <div class="content">
+        <div class="menu">
+            <div class="perso">
+                <div class="left"></div>
+                <div class="right">
+                    <h1>Printemps</h1>  
+                </div>
+            </div>
+            <div class="perso-bg"> 
+                <img src="pingouin-fleur.png" height="900px"> 
+            </div>
+        </div>
+        <div class="menu active">
+            <div class="perso">
+                <div class="left"></div>
+                <div class="right">
+                    <h1>Été</h1>  
+                </div>
+            </div>
+            <div class="perso-bg">  
+                <img src="pingouin.png" height="900px">
+            </div>
+        </div>
+        <div class="menu">
+            <div class="perso">
+                <div class="left"></div>
+                <div class="right">
+                    <h1>Automne</h1>  
+                </div>
+            </div>
+            <div class="perso-bg">  
+                <img src="pingouin-echarpe.png" height="900px">
+            </div>
+        </div>
+        <div class="menu">
+            <div class="perso">
+                <div class="left"></div>
+                <div class="right">
+                    <h1>Hiver</h1>  
+                </div>
+            </div>
+            <div class="perso-bg">  
+                <img src="pingouin-bonnet.png" height="900px">
+            </div>
+        </div>
+        <a href="game.html" class="personnage"><h2>Jouer</h2></a>
+    </div>
+
+
+     
+     
+     
+
+ <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+     <script type="text/javascript">
+       $(document).on("click", ".menu", function () {
+         $(this).addClass("active").siblings().removeClass("active");
+       });
+     </script>        
+         
+</body>
+</html>
