@@ -26,84 +26,6 @@ body > canvas#trees {
     z-index: 10;
 }
 
-body > section{
-    z-index: 100;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    padding: 25px;
-}
-body > section > div.controls{
-    display: flex;
-    flex-direction: row;
-    gap: 25px;
-    flex-wrap: wrap;
-}
-body > section > a.game{
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    
-    margin: 50px;
-    padding: 12.5px 25px;
-
-    font-size: 3em;
-    cursor: pointer;
-    user-select: none;
-    text-decoration: none;
-    color: #fff;
-
-    background-color: rgba(255, 255, 255, 0.25);
-    border-radius: 6.5px;
-    backdrop-filter: blur(5px);
-    transition: background-color .25s ease-in-out;}
-body > section > a.game:hover{background-color: rgba(255, 255, 255, 0.5);}
-body > section > div.controls > div{
-    padding: 12.5px;
-    backdrop-filter: blur(5px);
-    border-radius: 6.5px;
-
-    user-select: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-    transition: background-color .25s ease-in-out;}
-body > section > div.controls > div.long_input > input[type="number"]{
-    width: 100px;
-}
-body > section > div.controls > div > input[type="number"]{
-    color: #fff;
-    width: 55px;
-    font-weight: 900;
-    font-size: 1em;
-    background-color: transparent;
-    border: none;
-    outline: none;}
-
-body > section > div.controls #regenerate{
-    padding: 8px 16px;
-    cursor: pointer;}
-
-.bool{cursor: pointer;}
-.bool:hover,
-
-body > section.dark > div.controls > div{background-color: rgba(0, 0, 0, 0.4);}
-body > section.dark > div.controls #regenerate:hover{background-color: rgba(0, 0, 0, 0.25);}
-body > section.dark > a.game{background-color: rgba(0, 0, 0, 0.4);}
-body > section.dark > a.game:hover{background-color: rgba(0, 0, 0, 0.25);}
-.dark .bool[status="active"]:hover{background-color: rgba(0,0,0,0.2);}
-.dark .bool[status="active"]{background-color: rgba(0,0,0,0.4);}
-
-body > section.light > div.controls > div{background-color: rgba(255, 255, 255, 0.2);}
-body > section.light > div.controls #regenerate:hover{background-color: rgba(255, 255, 255, 0.5);}
-body .dark.light .bool:hover{background-color: rgba(255,255,255,0.5);}
-body .dark.light .bool{background-color: rgba(255,255,255,0.25);}
-body > section.light > a.game{background-color: rgba(255, 255, 255, 0.25);}
-body > section.light > a.game:hover{background-color: rgba(255, 255, 255, 0.5);}
-
 #nuage {
     position: absolute;
     width: 150%;
@@ -117,3 +39,99 @@ body > section.light > a.game:hover{background-color: rgba(255, 255, 255, 0.5);}
 }
 
 .slide {animation: nuage 25s infinite alternate;}
+
+canvas{
+    filter: blur(5px);
+}
+section.selection{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    margin: 10%;
+    display: grid;
+    grid-template-columns: repeat(4, 20%);
+    grid-template-rows: repeat(3, 20%);
+}
+
+section.selection > a{
+    position: relative;
+    margin: 15px;
+    text-decoration: none;
+    color: white;
+    padding: 15px;
+    padding-bottom: 0;
+    background-color: rgba(25,25,25,0.75);
+    border-radius: 5px;
+    min-width: 250px;
+    height: auto;
+    min-height: 100px;
+    background-repeat: 50%;
+}
+
+section.selection > a.large{
+    grid-column: span 2;
+}
+section.selection > a.long{grid-row: span 2;}
+section.selection > a img{
+    width: 18px;
+    margin-left: 5px;
+}
+section.selection > a > p{
+    padding: 5px;
+    padding-bottom: 0;
+    font-size: 1.2em;
+    line-height: 1.2em;
+    font-weight: 500;
+}
+
+section.selection > a:hover{background-color: rgba(25,25,25,0.6);}
+section.selection > div.information{
+    max-width: 450px;
+    padding: 15px;
+
+    margin: 15px;
+    background-image: url(./noise.png);
+    background-repeat: 350%;
+    background-color: rgba(255,255,255,0.25);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    color: rgba(25,25,25);
+
+    grid-column: 1;
+    grid-row: 1 / 3;
+}
+
+section.selection > div.information > hr{
+    width: 40%;
+    height: 5px;
+    background-color: rgba(41,41,41);
+    border-radius: 5px;
+    border: none;
+}
+section.selection > div.information > p strong{text-decoration: underline dashed;}
+section.selection > div.information > p{
+    font-size: 1.5em;
+    text-align: left;
+    max-width: 90%;
+    padding: 10px;
+    
+}
+section.selection > div.information > h1{
+    font-size: 1.55em;
+    line-height: 1.25em;
+    font-weight: 800;
+    font-family: sans-serif;
+}
+
+section.selection span{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 15px;
+    color: rgba(255,255,255,0.25);
+}
