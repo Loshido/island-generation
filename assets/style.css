@@ -43,6 +43,11 @@ body > canvas#trees {
 canvas{
     filter: blur(5px);
 }
+@media (max-width: 1000px) {
+section.selection{
+margin: 2.5% !important;
+}
+}
 section.selection{
     width: 100%;
     height: 100%;
